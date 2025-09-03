@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="template\opencl.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\opengl.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\sprite.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\surface.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\template.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\tmpl8math.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\scene.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorPool.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Starfield.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="MetalBall.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Playership.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="template\common.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\opencl.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\opengl.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\precomp.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\sprite.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\surface.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="template\tmpl8math.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="cl\tools.cl">
+      <Filter>kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="template\scene.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorPool.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Starfield.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="MetalBall.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Playership.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md">
+      <Filter>template</Filter>
+    </None>
+    <None Include="cl\kernels.cl">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="template\LICENSE">
+      <Filter>template</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="template">
+      <UniqueIdentifier>{c65d8edd-a382-4ee7-9af9-5d04810e2884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="kernels">
+      <UniqueIdentifier>{96ad1716-f468-46c6-8f16-5accbc19d76c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman">
+      <UniqueIdentifier>{cdae9b83-30ed-4dea-a709-78747a6e83e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\sprites">
+      <UniqueIdentifier>{871a903a-0d24-4a77-bbb9-047bdd00a164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\classes">
+      <UniqueIdentifier>{22fa2910-e0c5-45ff-90dd-0cdd05c7d94d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Ballom.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\Bomb.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\BombermanDown.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\BombermanExplode.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\BombermanLeft.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\BombermanRight.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\BombermanUp.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\Exit.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\ExplosionI.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\ExplosionII..png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\ExplosionIII.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\ExplosionIV.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\HardBlocks.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\SoftBlocks.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
