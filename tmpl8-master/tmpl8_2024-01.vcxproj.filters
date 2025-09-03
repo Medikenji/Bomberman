@@ -44,6 +44,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
+    <ClCompile Include="BomberMan.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -93,6 +96,9 @@
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberMan.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
   </ItemGroup>
