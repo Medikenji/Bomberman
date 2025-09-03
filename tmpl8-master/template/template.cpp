@@ -136,8 +136,8 @@ int main()
 	printf( "Working directory: %s\n", getcwd( dir, 2048 ) );
 #endif
 	// initialize application
-	InitRenderTarget( SCRWIDTH, SCRHEIGHT );
-	Surface* screen = new Surface( SCRWIDTH, SCRHEIGHT );
+	InitRenderTarget(256, 240 );
+	Surface* screen = new Surface(256, 240);
 	app = new Game();
 	app->screen = screen;
 	app->Init();
@@ -333,7 +333,7 @@ int main()
 	static Timer timer;
 	while (!glfwWindowShouldClose( window ))
 	{
-		deltaTime = min( 500.0f, 1000.0f * timer.elapsed() );
+		deltaTime = timer.elapsed();
 		timer.reset();
 		app->Tick( deltaTime );
 		// send the rendering result to the screen using OpenGL

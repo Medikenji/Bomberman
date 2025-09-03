@@ -29,21 +29,6 @@
     <ClCompile Include="ActorPool.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="Starfield.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="MetalBall.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Playership.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
     <ClCompile Include="BomberMan.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
@@ -81,21 +66,6 @@
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="ActorPool.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Starfield.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="MetalBall.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Playership.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="BomberMan.h">
@@ -137,21 +107,6 @@
     <Image Include="assets\Bomb.png">
       <Filter>bomberman\sprites</Filter>
     </Image>
-    <Image Include="assets\BombermanDown.png">
-      <Filter>bomberman\sprites</Filter>
-    </Image>
-    <Image Include="assets\BombermanExplode.png">
-      <Filter>bomberman\sprites</Filter>
-    </Image>
-    <Image Include="assets\BombermanLeft.png">
-      <Filter>bomberman\sprites</Filter>
-    </Image>
-    <Image Include="assets\BombermanRight.png">
-      <Filter>bomberman\sprites</Filter>
-    </Image>
-    <Image Include="assets\BombermanUp.png">
-      <Filter>bomberman\sprites</Filter>
-    </Image>
     <Image Include="assets\Exit.png">
       <Filter>bomberman\sprites</Filter>
     </Image>
@@ -171,6 +126,9 @@
       <Filter>bomberman\sprites</Filter>
     </Image>
     <Image Include="assets\SoftBlocks.png">
+      <Filter>bomberman\sprites</Filter>
+    </Image>
+    <Image Include="assets\Bomberman.png">
       <Filter>bomberman\sprites</Filter>
     </Image>
   </ItemGroup>

@@ -124,12 +124,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorPool.cpp" />
     <ClCompile Include="BomberMan.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="MetalBall.cpp" />
-    <ClCompile Include="Playership.cpp" />
-    <ClCompile Include="Starfield.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\scene.cpp">
@@ -150,13 +145,8 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorPool.h" />
     <ClInclude Include="BomberMan.h" />
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="cl\tools.cl" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="MetalBall.h" />
-    <ClInclude Include="Playership.h" />
-    <ClInclude Include="Starfield.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />
     <ClInclude Include="template\opengl.h" />
@@ -174,11 +164,7 @@
   <ItemGroup>
     <Image Include="assets\Ballom.png" />
     <Image Include="assets\Bomb.png" />
-    <Image Include="assets\BombermanDown.png" />
-    <Image Include="assets\BombermanExplode.png" />
-    <Image Include="assets\BombermanLeft.png" />
-    <Image Include="assets\BombermanRight.png" />
-    <Image Include="assets\BombermanUp.png" />
+    <Image Include="assets\Bomberman.png" />
     <Image Include="assets\Exit.png" />
     <Image Include="assets\ExplosionI.png" />
     <Image Include="assets\ExplosionII..png" />

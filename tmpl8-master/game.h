@@ -5,11 +5,7 @@
 #pragma once
 
 #include "ActorPool.h"
-#include "Starfield.h"
-#include "Bullet.h"
-#include "Playership.h"
-#include "MetalBall.h"
-#include "Enemy.h"
+#include "BomberMan.h"
 
 namespace Tmpl8
 {

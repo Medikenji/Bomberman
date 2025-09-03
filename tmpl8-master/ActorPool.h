@@ -8,12 +8,12 @@ class ActorPool
 	{
 	public:
 		ActorPool() { pool = new Actor * [MAXACTORS]; actors = 0; }
-		static void Tick()
+		static void Tick(float deltaTime)
 		{
 			for (int i = 0; i < actors; i++)
 			{
 				Actor* actor = pool[i];
-				if (!actor->Tick()) delete actor;
+				if (!actor->Tick(deltaTime)) delete actor;
 			}
 		}
 		static void Add(Actor* a_Actor) { pool[actors++] = a_Actor; }
