@@ -1,7 +1,5 @@
 #pragma once
 
-#include "precomp.h"
-
 class Actor
 {
 public:

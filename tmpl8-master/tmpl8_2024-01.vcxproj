@@ -140,6 +140,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">precomp.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="template\tmpl8math.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="template\tmpl8math.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ActorPool.h"
 
 class BomberMan : public Actor

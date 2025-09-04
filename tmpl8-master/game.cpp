@@ -8,6 +8,7 @@
 void Game::Init()
 {
 	ActorPool::ActorPool();
+	ActorPool::Add(new World());
 	ActorPool::Add(new BomberMan());
 	Actor::SetSurface(screen);
 }

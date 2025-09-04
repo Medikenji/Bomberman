@@ -10,8 +10,9 @@
 // www.codeproject.com/Articles/1188975/How-to-Optimize-Compilation-Times-with-Precompil
 
 // common C++ headers
-#include <iostream>				// Header that defines the standard input/output stream objects
+#include <iostream>				// header that defines the standard input/output stream objects
 #include <chrono>				// timing: struct Timer depends on this
+#include <sstream>				// header providing string stream classes
 #include <fstream>				// file i/o
 #include <vector>				// standard template library std::vector
 #include <list>					// standard template library std::list

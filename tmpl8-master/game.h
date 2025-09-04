@@ -6,6 +6,7 @@
 
 #include "ActorPool.h"
 #include "BomberMan.h"
+#include "World.h"
 
 namespace Tmpl8
 {
@@ -31,6 +32,8 @@ namespace Tmpl8
 		Sprite* ship;
 		ActorPool* actorPool;
 		int timer;
+	private:
+		World* world;
 	};
 
 } // namespace Tmpl8

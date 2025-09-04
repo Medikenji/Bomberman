@@ -8,6 +8,8 @@ BomberMan::BomberMan() {
 	this->m_animationSwitch = true;
 	this->x = 10;
 	this->y = 10;
+	
+	
 }
 
 bool BomberMan::Tick(float deltaTime)
