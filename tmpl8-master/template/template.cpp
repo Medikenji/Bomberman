@@ -331,6 +331,7 @@ int main()
 	float deltaTime = 0;
 	static int frameNr = 0;
 	static Timer timer;
+	glfwSwapInterval(1);
 	while (!glfwWindowShouldClose( window ))
 	{
 		deltaTime = timer.elapsed();
