@@ -7,9 +7,10 @@ public:
 	{
 		UNDEFINED = 0,
 		PLAYER = 1,
-		HARDWALL = 2,
-		SOFTWALL = 3,
-		BOMB = 4
+		BOMB = 2,
+		HARDWALL = 3,
+		SOFTWALL = 4,
+		GRASS = 5
 	};
 	virtual bool Tick(float deltaTime) = 0;
 	virtual bool Hit(float&, float&, float&, float&) { return false; }
@@ -19,4 +20,5 @@ public:
 	Sprite* m_Sprite;
 	static Sprite* m_Spark;
 	float x, y;
+	static float offsetx, offsety;
 };

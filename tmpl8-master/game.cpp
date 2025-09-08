@@ -8,13 +8,17 @@
 void Game::Init()
 {
 	ActorPool::ActorPool();
-	ActorPool::Add(new World());
-	ActorPool::Add(new BomberMan());
+	ActorPool::Add(world = new World());
+	ActorPool::Add(bomber = new BomberMan());
 	Actor::SetSurface(screen);
+	
 }
 
 void Game::Tick(float deltaTime)
 {
 	screen->Clear(0xbdbebd);
 	ActorPool::Tick(deltaTime);
+	world->GetCurrentBlock(bomber->x, bomber->y);
+	// fps counter
+	//printf("dt: %i \n", (int)(1/deltaTime));
 }

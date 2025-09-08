@@ -2,7 +2,7 @@
 
 #include "Actor.h"
 
-#define MAXACTORS 1000
+#define MAXACTORS 1024
 
 class ActorPool
 	{

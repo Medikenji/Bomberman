@@ -2,38 +2,67 @@
 #include "World.h"
 
 World::World() {
+    this->x = 0, this->y = 32;
     this->m_grass = new Surface("assets/Grass.png");
     this->m_hardBlock = new Surface("assets/HardBlock.png");
     this->InitialiseLevels();
+    this->currentLevel = level1;
 }
 
 bool World::Tick(float deltaTime)
 {
-    DrawMap(level1);
+    DrawMap();
 	return true;
 }
 
-bool World::DrawMap(Level* currentLevel)
+int World::GetCurrentBlock(float x, float y)
 {
-    const int blocksize = 16;
-    const int margin = 32;
-    float x = 0, y = margin-blocksize;
-    for (int i = 0; i < level1->mapSize; i++)
+    int row = (int)((y+blocksize - this->y)/blocksize);
+    int column = (int)(((x + blocksize - this->x) / blocksize));
+    int datapos = (row * currentLevel->mapWidth) + column - currentLevel->mapWidth - 1;
+    switch (currentLevel->mapData[datapos])
     {
-        if (i % level1->mapWidth == 0)
+    case 1:
+        printf("Hardwall \n");
+        return Actor::HARDWALL;
+        break;
+    case 2:
+        printf("Grass \n");
+        return Actor::GRASS;
+        break;
+    case 3:
+        printf("Softwall \n");
+        return Actor::SOFTWALL;
+        break;
+    default:
+        printf("N/A \n");
+        return -1;
+        break;
+    }
+
+}
+
+bool World::DrawMap()
+{
+    float bx = 0, by = -blocksize;
+    bx += this->x;
+    by += this->y;
+    for (int i = 0; i < currentLevel->mapSize; i++)
+    {
+        if (i % currentLevel->mapWidth == 0)
         {
-            x = 0;
-            y += blocksize;
+            bx = 0;
+            by += blocksize;
         }
         if (currentLevel->mapData[i] == 1)
         {
-            this->m_hardBlock->CopyTo(surface, x, y);
+            this->m_hardBlock->CopyTo(surface, bx, by);
         }
         if (currentLevel->mapData[i] == 2)
         {
-            this->m_grass->CopyTo(surface, x, y);
+            this->m_grass->CopyTo(surface, bx, by);
         }
-        x += blocksize;
+        bx += blocksize;
     }
     return true;
 }
@@ -41,7 +70,7 @@ bool World::DrawMap(Level* currentLevel)
 bool World::InitialiseLevels()
 {
 	level1 = new Level(25);
-    level1->mapData = new int[325] {
+    level1->mapData = new UINT8[325] {
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
             1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1,

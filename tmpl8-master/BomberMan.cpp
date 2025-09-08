@@ -6,8 +6,8 @@ BomberMan::BomberMan() {
 	this->m_animationState = 0;
 	this->m_animationTimer = 0;
 	this->m_animationSwitch = true;
-	this->x = 10;
-	this->y = 10;
+	this->x = 16;
+	this->y = 48;
 	
 	
 }
@@ -23,7 +23,8 @@ bool BomberMan::Tick(float deltaTime)
 	this->x += v_x;
 	this->y += v_y;
 	this->SetAnimation(v_x, v_y);
-	this->m_Sprite->Draw(surface, (int)x, (int)y);
+	this->m_Sprite->Draw(surface, (int)x+Actor::offsetx, (int)y+Actor::offsety);
+	/*printf("pos: %f %f \n", x,y);*/
 	return true;
 }
 
