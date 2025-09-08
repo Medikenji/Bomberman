@@ -20,5 +20,4 @@ public:
 	Sprite* m_Sprite;
 	static Sprite* m_Spark;
 	float x, y;
-	static float offsetx, offsety;
 };

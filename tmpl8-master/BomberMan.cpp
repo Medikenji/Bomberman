@@ -23,7 +23,7 @@ bool BomberMan::Tick(float deltaTime)
 	this->x += v_x;
 	this->y += v_y;
 	this->SetAnimation(v_x, v_y);
-	this->m_Sprite->Draw(surface, (int)x+Actor::offsetx, (int)y+Actor::offsety);
+	this->m_Sprite->Draw(surface, (int)x, (int)y);
 	/*printf("pos: %f %f \n", x,y);*/
 	return true;
 }
