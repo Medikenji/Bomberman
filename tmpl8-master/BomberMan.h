@@ -1,13 +1,12 @@
 #pragma once
-#include "ActorPool.h"
+#include "Entity.h"
 
-class BomberMan : public Actor
+class BomberMan : public Entity
 {
 public:
 	BomberMan();
 	~BomberMan();
-	bool Tick(float deltaTime);
-	int GetType() { return Actor::PLAYER; }
+	void Update(float deltaTime);
 
 private:
 	float m_animationTimer;

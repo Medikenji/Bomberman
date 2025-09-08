@@ -2,17 +2,17 @@
 #include "BomberMan.h"
 
 BomberMan::BomberMan() {
-	this->m_Sprite = new Sprite(new Surface("assets/Bomberman.png"), 19);
-	this->m_animationState = 0;
-	this->m_animationTimer = 0;
-	this->m_animationSwitch = true;
-	this->x = 16;
-	this->y = 48;
+	sprite = new Sprite(new Surface("assets/Bomberman.png"), 19);
+	m_animationState = 0;
+	m_animationTimer = 0;
+	m_animationSwitch = true;
+	position.x = 16;
+	position.y = 48;
 	
 	
 }
 
-bool BomberMan::Tick(float deltaTime)
+void BomberMan::Update(float deltaTime)
 {
 	this->m_animationTimer -= deltaTime;
 	float v_x = 0, v_y = 0;
@@ -20,12 +20,11 @@ bool BomberMan::Tick(float deltaTime)
 	if (GetAsyncKeyState(VK_DOWN)) v_y += 50 * deltaTime;
 	if (GetAsyncKeyState(VK_LEFT)) v_x += -50 * deltaTime;
 	if (GetAsyncKeyState(VK_RIGHT)) v_x += 50 * deltaTime;
-	this->x += v_x;
-	this->y += v_y;
+	position.x += v_x;
+	position.y += v_y;
 	this->SetAnimation(v_x, v_y);
-	this->m_Sprite->Draw(surface, (int)x, (int)y);
+	this->sprite->Draw(surface, (int)position.x, (int)position.y);
 	/*printf("pos: %f %f \n", x,y);*/
-	return true;
 }
 
 bool BomberMan::SetAnimation(float vx, float vy)
@@ -65,7 +64,7 @@ bool BomberMan::SetAnimation(float vx, float vy)
 
 bool BomberMan::Animate(int startFrame)
 {
-	this->m_Sprite->SetFrame(startFrame + m_animationState);
+	this->sprite->SetFrame(startFrame + m_animationState);
 	if (m_animationTimer > 0)
 	{
 		return true;

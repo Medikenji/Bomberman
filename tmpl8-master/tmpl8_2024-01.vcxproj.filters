@@ -23,16 +23,13 @@
     <ClCompile Include="template\scene.cpp">
       <Filter>template</Filter>
     </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="ActorPool.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
     <ClCompile Include="BomberMan.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,16 +62,13 @@
     <ClInclude Include="template\scene.h">
       <Filter>template</Filter>
     </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="ActorPool.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
     <ClInclude Include="BomberMan.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
   </ItemGroup>

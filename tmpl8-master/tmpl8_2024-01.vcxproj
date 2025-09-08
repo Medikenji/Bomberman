@@ -121,9 +121,8 @@
   </ItemDefinitionGroup>
   <!-- END Custom section -->
   <ItemGroup>
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="ActorPool.cpp" />
     <ClCompile Include="BomberMan.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
@@ -143,10 +142,9 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorPool.h" />
     <ClInclude Include="BomberMan.h" />
     <ClInclude Include="cl\tools.cl" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "ActorPool.h"
 #include "BomberMan.h"
 #include "World.h"
 
@@ -30,11 +29,11 @@ namespace Tmpl8
 		// data members
 		int2 mousePos;
 		Sprite* ship;
-		ActorPool* actorPool;
 		int timer;
 	private:
 		World* world;
 		BomberMan* bomber;
+		void CollisionHandler();
 	};
 
 } // namespace Tmpl8
