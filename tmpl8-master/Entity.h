@@ -1,4 +1,7 @@
 #pragma once
+
+#define SURFACEAMOUNT 2
+
 class Entity
 {
 public:
@@ -16,8 +19,9 @@ public:
 	};
 
 	// Functions
-	static void SetSurface(Surface* a_Surface) { surface = a_Surface; }
-	static Surface* surface;
+	static void SetSurface(Surface* a_Surface) { mainsurface = a_Surface; }
+	static Surface* mainsurface;
+	static void drawSplitScreens();
 	virtual void Update(float deltaTime) = 0;
 	void UpdateChildren(float deltaTime);
 	void AddChild(Entity* child);
@@ -28,10 +32,23 @@ public:
 	// Variables
 	Position position;
 	Scale scale;
-
+	
 protected:
+	// Structs
+	struct SplitSurface
+	{
+		Surface* surface = new Surface();
+		float offsetX, offsetY;
+	};
+
+	// Functions
+	void CopyToSurfaces(Surface* srfc, int x, int y);
+	void DrawToSurfaces(Sprite* srfc, int x, int y);
+
 	// Variables
 	Sprite* sprite;
+	static SplitSurface* surfaces[SURFACEAMOUNT];
+
 
 private:
 	// Variables
@@ -39,5 +56,6 @@ private:
 	Entity* m_children[255];
 	static int m_nextEntityId;
 	int m_entityId;
+	static bool m_initialisedSurfaces;
 };
 

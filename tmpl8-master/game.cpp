@@ -16,5 +16,5 @@ void Game::Tick(float deltaTime)
 {
 	screen->Clear(0xbdbebd);
 	world->Update(deltaTime);
-	//world->DeleteChild(world->getChildById(6));
+	Entity::drawSplitScreens();
 }

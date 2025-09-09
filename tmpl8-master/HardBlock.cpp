@@ -16,5 +16,6 @@ HardBlock::~HardBlock()
 
 void HardBlock::Update(float deltaTime)
 {
-	texture->CopyTo(surface, position.x, position.y);
+	//texture->CopyTo(mainsurface, position.x, position.y);
+	CopyToSurfaces(texture, position.x, position.y);
 }

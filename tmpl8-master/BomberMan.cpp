@@ -21,8 +21,7 @@ void BomberMan::Update(float deltaTime)
 	position.x += v_x;
 	position.y += v_y;
 	this->SetAnimation(v_x, v_y);
-	this->sprite->Draw(surface, (int)position.x, (int)position.y);
-	/*printf("pos: %f %f \n", x,y);*/
+	DrawToSurfaces(sprite, position.x, position.y);
 }
 
 bool BomberMan::SetAnimation(float vx, float vy)

@@ -33,7 +33,6 @@ namespace Tmpl8
 	private:
 		World* world;
 		BomberMan* bomber;
-		void CollisionHandler();
 	};
 
 } // namespace Tmpl8

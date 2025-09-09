@@ -136,8 +136,8 @@ int main()
 	printf( "Working directory: %s\n", getcwd( dir, 2048 ) );
 #endif
 	// initialize application
-	InitRenderTarget(256, 240 );
-	Surface* screen = new Surface(256, 240);
+	InitRenderTarget(RNDRWIDTH, RNDRHEIGHT );
+	Surface* screen = new Surface(RNDRWIDTH, RNDRHEIGHT);
 	app = new Game();
 	app->screen = screen;
 	app->Init();

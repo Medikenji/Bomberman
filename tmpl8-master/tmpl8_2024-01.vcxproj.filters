@@ -32,7 +32,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="HardBlock.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -72,7 +74,9 @@
     <ClInclude Include="Entity.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="HardBlock.h" />
+    <ClInclude Include="HardBlock.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -84,6 +88,7 @@
     <None Include="template\LICENSE">
       <Filter>template</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template">

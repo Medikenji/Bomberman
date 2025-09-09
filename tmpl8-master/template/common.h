@@ -10,6 +10,9 @@
 // default screen resolution
 #define SCRWIDTH	1024
 #define SCRHEIGHT	960
+
+#define RNDRWIDTH 256
+#define RNDRHEIGHT 240
 // #define FULLSCREEN
 
 // constants

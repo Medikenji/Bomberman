@@ -60,7 +60,8 @@ bool World::DrawMap()
         }
         if (currentLevel->mapData[i] == 2)
         {
-            this->m_grass->CopyTo(surface, bx, by);
+            //this->m_grass->CopyTo(mainsurface, bx, by);
+            CopyToSurfaces(m_grass, bx, by);
         }
         bx += blocksize;
     }
