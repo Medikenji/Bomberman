@@ -26,10 +26,13 @@ public:
 	Entity* getChildById(int ID);
 
 	// Variables
-	Sprite* sprite;
 	Position position;
 	Scale scale;
-	
+
+protected:
+	// Variables
+	Sprite* sprite;
+
 private:
 	// Variables
 	int childAmount;

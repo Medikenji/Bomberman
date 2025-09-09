@@ -32,6 +32,7 @@
     <ClCompile Include="Entity.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
+    <ClCompile Include="HardBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Entity.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
+    <ClInclude Include="HardBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">

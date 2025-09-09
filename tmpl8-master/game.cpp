@@ -7,14 +7,14 @@
 
 void Game::Init()
 {
+	Entity::SetSurface(screen);
 	world = new World();
 	world->AddChild(new BomberMan());
-	Entity::SetSurface(screen);
-	
 }
 
 void Game::Tick(float deltaTime)
 {
 	screen->Clear(0xbdbebd);
 	world->Update(deltaTime);
+	//world->DeleteChild(world->getChildById(6));
 }

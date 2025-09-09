@@ -9,7 +9,7 @@ Entity::Entity()
 	m_entityId = m_nextEntityId++;
 	position.x = 0, position.y = 0;
 	scale.x = 1, scale.y = 1;
-	childAmount = 0;
+	childAmount = -1;
 }
 
 Entity::~Entity()
@@ -22,7 +22,9 @@ Entity::~Entity()
 
 void Entity::UpdateChildren(float deltaTime)
 {
-	for (int i = 0; i <childAmount; i++)
+	if (childAmount == 0)
+		return;
+	for (int i = 0; i < childAmount; i++)
 	{
 		m_children[i]->Update(deltaTime);
 		m_children[i]->UpdateChildren(deltaTime);
@@ -31,7 +33,7 @@ void Entity::UpdateChildren(float deltaTime)
 
 void Entity::AddChild(Entity* child)
 {
-	m_children[childAmount++] = child;
+	m_children[++childAmount] = child;
 }
 
 void Entity::DeleteChild(Entity* child)
@@ -68,4 +70,5 @@ Entity* Entity::getChildById(int id)
 			return m_children[i];
 		}
 	}
+	return nullptr;
 }

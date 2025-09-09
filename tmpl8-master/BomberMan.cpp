@@ -8,18 +8,16 @@ BomberMan::BomberMan() {
 	m_animationSwitch = true;
 	position.x = 16;
 	position.y = 48;
-	
-	
 }
 
 void BomberMan::Update(float deltaTime)
 {
 	this->m_animationTimer -= deltaTime;
 	float v_x = 0, v_y = 0;
-	if (GetAsyncKeyState(VK_UP)) v_y += -50 * deltaTime;
-	if (GetAsyncKeyState(VK_DOWN)) v_y += 50 * deltaTime;
-	if (GetAsyncKeyState(VK_LEFT)) v_x += -50 * deltaTime;
-	if (GetAsyncKeyState(VK_RIGHT)) v_x += 50 * deltaTime;
+	if (GetAsyncKeyState(VK_UP)) v_y += -45 * deltaTime;
+	if (GetAsyncKeyState(VK_DOWN)) v_y += 45 * deltaTime;
+	if (GetAsyncKeyState(VK_LEFT)) v_x += -45 * deltaTime;
+	if (GetAsyncKeyState(VK_RIGHT)) v_x += 45 * deltaTime;
 	position.x += v_x;
 	position.y += v_y;
 	this->SetAnimation(v_x, v_y);

@@ -2,9 +2,9 @@
 #include "World.h"
 
 World::World() {
+    m_hardBlocksGenerated = false;
     position.y = 32;
     this->m_grass = new Surface("assets/Grass.png");
-    this->m_hardBlock = new Surface("assets/HardBlock.png");
     this->InitialiseLevels();
     this->currentLevel = level1;
 }
@@ -41,25 +41,6 @@ int World::GetCurrentBlock(float x, float y)
     }
 }
 
-//Actor::pos World::GetGridCoord(Actor::pos position)
-//{
-//    int row = (int)((position.y + blocksize - this->position.y) / blocksize);
-//    int column = (int)(((position.x + blocksize - this->position.x) / blocksize));
-//    Actor::pos gridCoord;
-//    gridCoord.x = column, gridCoord.y = row;
-//    
-//    return gridCoord;
-//}
-//
-//Actor::pos World::GetPixelCoord(Actor::pos position)
-//{
-//    float x = position.x * blocksize;
-//    float y = position.y * blocksize;
-//    Actor::pos pixelCoord;
-//    pixelCoord.x = x, pixelCoord.y = y;
-//    //printf("x: %f   y: %f\n", pixelCoord.x, pixelCoord.y);
-//    return pixelCoord;
-//}
 
 bool World::DrawMap()
 {
@@ -73,9 +54,9 @@ bool World::DrawMap()
             bx = 0;
             by += blocksize;
         }
-        if (currentLevel->mapData[i] == 1)
+        if (currentLevel->mapData[i] == 1 &&  !m_hardBlocksGenerated)
         {
-            this->m_hardBlock->CopyTo(surface, bx, by);
+            AddChild(new HardBlock({ bx, by }));
         }
         if (currentLevel->mapData[i] == 2)
         {
@@ -83,6 +64,7 @@ bool World::DrawMap()
         }
         bx += blocksize;
     }
+    m_hardBlocksGenerated = true;
     return true;
 }
 

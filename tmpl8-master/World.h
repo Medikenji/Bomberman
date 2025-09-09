@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "HardBlock.h"
 
 struct Level
 {
@@ -24,7 +25,7 @@ public:
 private:
 	const int margin = 32;
 	Surface* m_grass;
-	Surface* m_hardBlock;
+	bool m_hardBlocksGenerated;
 	bool DrawMap();
 	bool InitialiseLevels();
 };
