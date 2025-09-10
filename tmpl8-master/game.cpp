@@ -9,7 +9,9 @@ void Game::Init()
 {
 	Entity::SetSurface(screen);
 	world = new World();
+	for(int i = 0; i < SURFACEAMOUNT; i ++)
 	world->AddChild(new BomberMan());
+
 }
 
 void Game::Tick(float deltaTime)

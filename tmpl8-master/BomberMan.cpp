@@ -1,11 +1,14 @@
 #include "precomp.h"
 #include "BomberMan.h"
 
+int BomberMan::m_nextBomberId = 0;
+
 BomberMan::BomberMan() {
 	sprite = new Sprite(new Surface("assets/Bomberman.png"), 19);
 	m_animationState = 0;
 	m_animationTimer = 0;
 	m_animationSwitch = true;
+	m_bomberId = m_nextBomberId++;
 	position.x = 16;
 	position.y = 48;
 }
@@ -14,14 +17,30 @@ void BomberMan::Update(float deltaTime)
 {
 	this->m_animationTimer -= deltaTime;
 	float v_x = 0, v_y = 0;
-	if (GetAsyncKeyState(VK_UP)) v_y += -45 * deltaTime;
-	if (GetAsyncKeyState(VK_DOWN)) v_y += 45 * deltaTime;
-	if (GetAsyncKeyState(VK_LEFT)) v_x += -45 * deltaTime;
-	if (GetAsyncKeyState(VK_RIGHT)) v_x += 45 * deltaTime;
+	Input(deltaTime, &v_x, &v_y);
 	position.x += v_x;
 	position.y += v_y;
 	this->SetAnimation(v_x, v_y);
+	Entity::SetCameraX(m_bomberId, -position.x+RNDRWIDTH/SURFACEAMOUNT/2);
 	DrawToSurfaces(sprite, position.x, position.y);
+}
+
+void BomberMan::Input(float deltaTime, float* vx, float* vy)
+{
+	if (m_bomberId == 0)
+	{
+		if (GetAsyncKeyState(VK_UP)) *vy += -45 * deltaTime;
+		if (GetAsyncKeyState(VK_DOWN)) *vy += 45 * deltaTime;
+		if (GetAsyncKeyState(VK_LEFT)) *vx += -45 * deltaTime;
+		if (GetAsyncKeyState(VK_RIGHT)) *vx += 45 * deltaTime;
+	}
+	if (m_bomberId == 1)
+	{
+		if (GetAsyncKeyState(GLFW_KEY_W)) *vy += -45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_S)) *vy += 45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_A)) *vx += -45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_D)) *vx += 45 * deltaTime;
+	}
 }
 
 bool BomberMan::SetAnimation(float vx, float vy)

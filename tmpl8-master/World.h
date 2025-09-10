@@ -18,9 +18,10 @@ public:
 	~World();
 	void Update(float deltaTime);
 	int GetCurrentBlock(float x, float y);
-	Level* currentLevel;
+	static Level* currentLevel;
+	static int GetLevelWidth() { return currentLevel->mapWidth; };
 	Level* level1;
-	const int blocksize = 16;
+	static const int BLOCKSIZE = 16;
 
 private:
 	const int margin = 32;

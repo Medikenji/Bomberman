@@ -1,6 +1,6 @@
 #pragma once
 
-#define SURFACEAMOUNT 2
+#define SURFACEAMOUNT 1
 
 class Entity
 {
@@ -23,6 +23,7 @@ public:
 	static Surface* mainsurface;
 	static void drawSplitScreens();
 	virtual void Update(float deltaTime) = 0;
+	int GetID() { return m_entityId; };
 	void UpdateChildren(float deltaTime);
 	void AddChild(Entity* child);
 	void DeleteChild(Entity* child);
@@ -42,6 +43,7 @@ protected:
 	};
 
 	// Functions
+	static void SetCameraX(int screen, int x);
 	void CopyToSurfaces(Surface* srfc, int x, int y);
 	void DrawToSurfaces(Sprite* srfc, int x, int y);
 

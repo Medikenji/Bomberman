@@ -14,5 +14,8 @@ private:
 	bool m_animationSwitch;
 	bool SetAnimation(float vx, float vy);
 	bool Animate(int startFrame);
+	void Input(float deltaTime, float* vx, float* vy);
+	static int m_nextBomberId;
+	int m_bomberId;
 };
 

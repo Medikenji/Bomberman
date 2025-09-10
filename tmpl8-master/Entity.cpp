@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "Entity.h"
+#include "World.h"
 
 Surface* Entity::mainsurface;
 Entity::SplitSurface* Entity::surfaces[SURFACEAMOUNT];
@@ -37,7 +38,7 @@ void Entity::UpdateChildren(float deltaTime)
 {
 	if (childAmount == 0)
 		return;
-	for (int i = 0; i < childAmount; i++)
+	for (int i = 0; i <= childAmount; i++)
 	{
 		m_children[i]->Update(deltaTime);
 		m_children[i]->UpdateChildren(deltaTime);
@@ -86,11 +87,26 @@ Entity* Entity::getChildById(int id)
 	return nullptr;
 }
 
+void Entity::SetCameraX(int screen, int x)
+{
+	if (x > 0)
+	{
+		x = 0;
+	}
+	int a = (World::currentLevel->mapWidth - ((RNDRWIDTH/SURFACEAMOUNT)>>4));
+	int b = (a * World::BLOCKSIZE) - World::BLOCKSIZE;
+	if (x < -a-b+(SURFACEAMOUNT==1?-8:0))
+	{
+		x = -a-b+(SURFACEAMOUNT==1?-8:0);
+	}
+	surfaces[screen]->offsetX = x;
+}
+
 void Entity::drawSplitScreens()
 {
 	for (int i = 0; i < SURFACEAMOUNT; i++)
 	{
-		surfaces[i]->surface->CopyTo(mainsurface, 128 * i, 0);
+		surfaces[i]->surface->CopyTo(mainsurface, (RNDRWIDTH/SURFACEAMOUNT) * i, 0);
 	}
 }
 

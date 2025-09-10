@@ -1,6 +1,8 @@
 #include "precomp.h"
 #include "World.h"
 
+Level* World::currentLevel;
+
 World::World() {
     m_hardBlocksGenerated = false;
     position.y = 32;
@@ -17,8 +19,8 @@ void World::Update(float deltaTime)
 
 int World::GetCurrentBlock(float x, float y)
 {
-    int row = (int)((y+blocksize - position.y)/blocksize);
-    int column = (int)(((x + blocksize - this->position.x) / blocksize));
+    int row = (int)((y+BLOCKSIZE - position.y)/ BLOCKSIZE);
+    int column = (int)(((x + BLOCKSIZE - this->position.x) / BLOCKSIZE));
     int datapos = (row * currentLevel->mapWidth) + column - currentLevel->mapWidth - 1;
     switch (currentLevel->mapData[datapos])
     {
@@ -44,7 +46,7 @@ int World::GetCurrentBlock(float x, float y)
 
 bool World::DrawMap()
 {
-    float bx = 0, by = -blocksize;
+    float bx = 0, by = -BLOCKSIZE;
     bx += this->position.x;
     by += this->position.y;
     for (int i = 0; i < currentLevel->mapSize; i++)
@@ -52,18 +54,17 @@ bool World::DrawMap()
         if (i % currentLevel->mapWidth == 0)
         {
             bx = 0;
-            by += blocksize;
+            by += BLOCKSIZE;
         }
-        if (currentLevel->mapData[i] == 1 &&  !m_hardBlocksGenerated)
+        if (currentLevel->mapData[i] == 1 && !m_hardBlocksGenerated)
         {
-            AddChild(new HardBlock({ bx, by }));
+           AddChild(new HardBlock({ bx, by }));
         }
         if (currentLevel->mapData[i] == 2)
         {
-            //this->m_grass->CopyTo(mainsurface, bx, by);
-            CopyToSurfaces(m_grass, bx, by);
+           CopyToSurfaces(m_grass, bx, by);
         }
-        bx += blocksize;
+        bx += BLOCKSIZE;
     }
     m_hardBlocksGenerated = true;
     return true;
