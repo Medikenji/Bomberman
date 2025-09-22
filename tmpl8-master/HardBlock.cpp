@@ -1,12 +1,13 @@
 #include "precomp.h"
 #include "HardBlock.h"
 
-HardBlock::HardBlock(Position setposition)
+Surface* HardBlock::m_texture = new Surface("assets/HardBlock.png");
+
+HardBlock::HardBlock(float2 setposition)
 {
 	position = setposition;
-	// Const artificial width and height
+	// artificial width and height
 	scale = { 16, 16 };
-	texture = new Surface("assets/HardBlock.png");
 }
 
 HardBlock::~HardBlock()
@@ -16,5 +17,5 @@ HardBlock::~HardBlock()
 
 void HardBlock::Update(float deltaTime)
 {
-	CopyToSurfaces(texture, position.x, position.y);
+	CopyToSurfaces(m_texture, position.x, position.y);
 }

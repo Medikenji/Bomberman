@@ -8,15 +8,11 @@
 void Game::Init()
 {
 	Entity::SetSurface(screen);
-	world = new World();
-	for(int i = 0; i < SURFACEAMOUNT; i ++)
-	world->AddChild(new BomberMan());
-
+	Entity::AddEntity(new World());
 }
 
 void Game::Tick(float deltaTime)
 {
-	screen->Clear(0xbdbebd);
-	world->Update(deltaTime);
+	Entity::UpdateEntities(deltaTime);
 	Entity::drawSplitScreens();
 }

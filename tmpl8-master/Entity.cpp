@@ -4,8 +4,10 @@
 
 Surface* Entity::mainsurface;
 Entity::SplitSurface* Entity::surfaces[SURFACEAMOUNT];
+Entity* Entity::m_entities[1024];
 bool Entity::m_initialisedSurfaces = false;
 int Entity::m_nextEntityId = 0;
+int Entity::m_entityAmount = 0;
 
 Entity::Entity()
 {
@@ -20,46 +22,47 @@ Entity::Entity()
 		}
 		m_initialisedSurfaces = true;
 	}
+	isLiving = 0;
 	m_entityId = m_nextEntityId++;
 	position.x = 0, position.y = 0;
 	scale.x = 1, scale.y = 1;
-	childAmount = -1;
 }
 
 Entity::~Entity()
 {
-	for (int i = 0; i < childAmount; i++)
+
+}
+
+void Entity::UpdateEntities(float deltaTime)
+{
+	for (int i = 0; i < m_entityAmount; i++)
 	{
-		m_children[i]->DeleteChild(m_children[i]);
+		if(!m_entities[i]->isLiving)
+		m_entities[i]->Update(deltaTime);
+	}
+	for (int i = 0; i < m_entityAmount; i++)
+	{
+		if (m_entities[i]->isLiving)
+		m_entities[i]->Update(deltaTime);
 	}
 }
 
-void Entity::UpdateChildren(float deltaTime)
+void Entity::AddEntity(Entity* child)
 {
-	if (childAmount == 0)
-		return;
-	for (int i = 0; i <= childAmount; i++)
-	{
-		m_children[i]->Update(deltaTime);
-		m_children[i]->UpdateChildren(deltaTime);
-	}
+	m_entities[m_entityAmount++] = child;
+	child->Initialise();
 }
 
-void Entity::AddChild(Entity* child)
-{
-	m_children[++childAmount] = child;
-}
-
-void Entity::DeleteChild(Entity* child)
+void Entity::DeleteEntity(Entity* child)
 {
 	int id = child->m_entityId;
 	int childIndex = -1;
-	for (int i = 0; i < childAmount; i++)
+	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (m_children[i]->m_entityId == child->m_entityId)
+		if (m_entities[i]->m_entityId == child->m_entityId)
 		{
 			childIndex = i;
-			delete m_children[i];
+			delete m_entities[i];
 			break;
 		}
 	}
@@ -68,20 +71,21 @@ void Entity::DeleteChild(Entity* child)
 		std::cout << "Did not find child to delete with ID: " << id << "\n";
 		return;
 	}
-	for (int i = childIndex + 1; i < childAmount - childIndex; i++)
+	for (int i = childIndex + 1; i < m_entityAmount; i++)
 	{
-		m_children[i - 1] = m_children[i];
+		m_entities[i - 1] = m_entities[i];
 	}
-	childAmount--;
+	m_entityAmount--;
 }
 
-Entity* Entity::getChildById(int id)
+
+Entity* Entity::GetEntityById(int id)
 {
-	for (int i = 0; i < childAmount; i++)
+	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (m_children[i]->m_entityId == id)
+		if (m_entities[i]->m_entityId == id)
 		{
-			return m_children[i];
+			return m_entities[i];
 		}
 	}
 	return nullptr;
@@ -93,7 +97,7 @@ void Entity::SetCameraX(int screen, int x)
 	{
 		x = 0;
 	}
-	int a = (World::currentLevel->mapWidth - ((RNDRWIDTH/SURFACEAMOUNT)>>4));
+	int a = (World::currentLevel->getMapWidth() - ((RNDRWIDTH / SURFACEAMOUNT) >> 4));
 	int b = (a * World::BLOCKSIZE) - World::BLOCKSIZE;
 	if (x < -a-b+(SURFACEAMOUNT==1?-8:0))
 	{
@@ -118,10 +122,26 @@ void Entity::CopyToSurfaces(Surface* srfc, int x, int y)
 	}
 }
 
-void Entity::DrawToSurfaces(Sprite* srfc, int x, int y)
+void Entity::DrawToSurfaces(Sprite* sprt, int x, int y)
 {
 	for (int i = 0; i < SURFACEAMOUNT; i++)
 	{
-		srfc->Draw(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
+		sprt->Draw(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
+	}
+}
+
+void Entity::PlotToSurfaces(int x, int y, int color)
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		surfaces[i]->surface->Plot(x + surfaces[i]->offsetX, y + surfaces[i]->offsetY, color);
+	}
+}
+
+void Entity::ClearSurfaces()
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		surfaces[i]->surface->Clear(0xbdbebd);
 	}
 }

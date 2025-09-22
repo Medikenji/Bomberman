@@ -4,13 +4,13 @@
 class HardBlock : public Entity
 {
 public:
-	HardBlock(Position setposition);
+	HardBlock(float2 setposition);
 	~HardBlock();
 
 	// Functions
 	void Update(float deltaTime);
 
 private:
-	Surface* texture;
+	static Surface* m_texture;
 };
 

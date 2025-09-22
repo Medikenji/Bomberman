@@ -60,9 +60,8 @@ Surface::~Surface()
 
 void Surface::Clear( uint c )
 {
-	// WARNING: not the fastest way to do this.
 	const int s = width * height;
-	for (int i = 0; i < s; i++) pixels[i] = c;
+	std::fill(pixels, pixels + s, c);
 }
 
 void Surface::Plot( int x, int y, uint c )
@@ -168,10 +167,12 @@ void Surface::CopyTo( Surface* d, int x, int y )
 		if ((srcwidth > 0) && (srcheight > 0))
 		{
 			dst += x + dstwidth * y;
+			int a = srcwidth * 4;
 			for (int i = 0; i < srcheight; i++)
 			{
-				memcpy( dst, src, srcwidth * 4 );
-				dst += dstwidth, src += width;
+				memcpy( dst, src, a );
+				dst += dstwidth;
+				src += width;
 			}
 		}
 	}

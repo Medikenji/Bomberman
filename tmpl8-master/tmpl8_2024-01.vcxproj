@@ -121,10 +121,13 @@
   </ItemDefinitionGroup>
   <!-- END Custom section -->
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BomberMan.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="SoftBlock.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\scene.cpp">
@@ -143,11 +146,14 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="BomberMan.h" />
     <ClInclude Include="cl\tools.cl" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="HardBlock.h" />
+    <ClInclude Include="SoftBlock.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />
     <ClInclude Include="template\opengl.h" />
@@ -160,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />
-    <None Include="cpp.hint" />
     <None Include="README.md" />
     <None Include="template\LICENSE" />
   </ItemGroup>

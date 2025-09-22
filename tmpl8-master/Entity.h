@@ -8,31 +8,31 @@ public:
 	Entity();
 	~Entity();
 
-	// Structs
-	struct Position
-	{
-		float x, y;
-	};
-	struct Scale
-	{
-		float x, y;
+	// Enums
+	enum {
+		GRASS = 0,
+		HARDWALL = 1,
+		SOFTWALL = 2,
+		BOMB = 3
 	};
 
 	// Functions
 	static void SetSurface(Surface* a_Surface) { mainsurface = a_Surface; }
 	static Surface* mainsurface;
+	static void ClearSurfaces();
 	static void drawSplitScreens();
 	virtual void Update(float deltaTime) = 0;
+	static void UpdateEntities(float deltaTime);
 	int GetID() { return m_entityId; };
-	void UpdateChildren(float deltaTime);
-	void AddChild(Entity* child);
-	void DeleteChild(Entity* child);
-	Entity *getChild(int index) { return m_children[index]; };
-	Entity* getChildById(int ID);
+	static void AddEntity(Entity* child);
+	void DeleteEntity(Entity* child);
+	Entity *GetChild(int index) { return m_entities[index]; };
+	Entity* GetEntityById(int ID);
+	float4 GetRectangle() { return { position.x, scale.x, position.y, scale.y }; };
 
 	// Variables
-	Position position;
-	Scale scale;
+	float2 position;
+	float2 scale;
 	
 protected:
 	// Structs
@@ -45,17 +45,20 @@ protected:
 	// Functions
 	static void SetCameraX(int screen, int x);
 	void CopyToSurfaces(Surface* srfc, int x, int y);
-	void DrawToSurfaces(Sprite* srfc, int x, int y);
+	void DrawToSurfaces(Sprite* sprt, int x, int y);
+	void PlotToSurfaces(int x, int y, int color);
+	virtual void Initialise() {};
 
 	// Variables
 	Sprite* sprite;
 	static SplitSurface* surfaces[SURFACEAMOUNT];
+	bool isLiving;
 
 
 private:
 	// Variables
-	int childAmount;
-	Entity* m_children[255];
+	static int m_entityAmount;
+	static Entity* m_entities[1024];
 	static int m_nextEntityId;
 	int m_entityId;
 	static bool m_initialisedSurfaces;

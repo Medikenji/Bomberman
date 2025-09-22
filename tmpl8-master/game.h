@@ -32,7 +32,6 @@ namespace Tmpl8
 		int timer;
 	private:
 		World* world;
-		BomberMan* bomber;
 	};
 
 } // namespace Tmpl8
