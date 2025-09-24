@@ -19,10 +19,12 @@ BomberMan::BomberMan() {
 	scale.y = 16;
 }
 
+
 void BomberMan::Initialise()
 {
 	m_currentWorld = static_cast<World*>(GetEntityById(0));
 }
+
 
 void BomberMan::Update(float deltaTime)
 {
@@ -37,26 +39,8 @@ void BomberMan::Update(float deltaTime)
 	DrawToSurfaces(sprite, position.x, position.y);
 }
 
-void BomberMan::Input(float deltaTime, float* vx, float* vy)
-{
-	if (m_bomberId == 0)
-	{
-		if (GetAsyncKeyState(GLFW_KEY_Z)) m_currentWorld->PlaceBomb(position+(scale.x/2));
-		if (GetAsyncKeyState(VK_UP)) *vy += -45 * deltaTime;
-		if (GetAsyncKeyState(VK_DOWN)) *vy += 45 * deltaTime;
-		if (GetAsyncKeyState(VK_LEFT)) *vx += -45 * deltaTime;
-		if (GetAsyncKeyState(VK_RIGHT)) *vx += 45 * deltaTime;
-	}
-	if (m_bomberId == 1)
-	{
-		if (GetAsyncKeyState(GLFW_KEY_W)) *vy += -45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_S)) *vy += 45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_A)) *vx += -45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_D)) *vx += 45 * deltaTime;
-	}
-}
 
-void BomberMan::TileCollision()
+bool BomberMan::TileCollision()
 {
 	float2 temp = { position.x + scale.x / 2, position.y + scale.y / 2 };
 	UINT8* gridPos = m_currentWorld->GetGridPos(temp);
@@ -75,7 +59,7 @@ void BomberMan::TileCollision()
 	float2 pixelPosition = m_currentWorld->GetPixelPosFromGrid({ gridPos[0], gridPos[1] });
 
 	// check left
-	if (l != 0)
+	if (l != Entity::GRASS)
 	{
 		threshold = pixelPosition.x;
 		if (position.x < threshold)
@@ -85,7 +69,7 @@ void BomberMan::TileCollision()
 	};
 
 	// check top
-	if (t != 0)
+	if (t != Entity::GRASS)
 	{
 		threshold = pixelPosition.y;
 		if (position.y < threshold)
@@ -95,7 +79,7 @@ void BomberMan::TileCollision()
 	};
 
 	// check right
-	if (r != 0)
+	if (r != Entity::GRASS)
 	{
 		threshold = pixelPosition.x + World::BLOCKSIZE;
 		if (position.x + scale.x > threshold)
@@ -105,7 +89,7 @@ void BomberMan::TileCollision()
 	}
 
 	// check bottom
-	if (b != 0)
+	if (b != Entity::GRASS)
 	{
 		threshold = pixelPosition.y + World::BLOCKSIZE;
 		if (position.y + scale.y > threshold)
@@ -113,7 +97,9 @@ void BomberMan::TileCollision()
 			position.y = threshold - scale.y;
 		}
 	}
+	return true;
 }
+
 
 bool BomberMan::SetAnimation(float vx, float vy)
 {
@@ -150,6 +136,7 @@ bool BomberMan::SetAnimation(float vx, float vy)
 	return true;
 };
 
+
 bool BomberMan::Animate(int startFrame)
 {
 	this->sprite->SetFrame(startFrame + m_animationState);
@@ -174,5 +161,26 @@ bool BomberMan::Animate(int startFrame)
 		this->m_animationSwitch = !this->m_animationSwitch;
 	}
 
+	return true;
+}
+
+
+bool BomberMan::Input(float deltaTime, float* vx, float* vy)
+{
+	if (m_bomberId == 0)
+	{
+		if (GetAsyncKeyState(GLFW_KEY_Z)) m_currentWorld->PlaceBomb(position+(scale.x/2));
+		if (GetAsyncKeyState(VK_UP)) *vy += -45 * deltaTime;
+		if (GetAsyncKeyState(VK_DOWN)) *vy += 45 * deltaTime;
+		if (GetAsyncKeyState(VK_LEFT)) *vx += -45 * deltaTime;
+		if (GetAsyncKeyState(VK_RIGHT)) *vx += 45 * deltaTime;
+	}
+	if (m_bomberId == 1)
+	{
+		if (GetAsyncKeyState(GLFW_KEY_W)) *vy += -45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_S)) *vy += 45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_A)) *vx += -45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_D)) *vx += 45 * deltaTime;
+	}
 	return true;
 }

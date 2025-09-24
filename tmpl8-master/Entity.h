@@ -1,43 +1,44 @@
 #pragma once
 
 #define SURFACEAMOUNT 1
+#define MAX_ENTITIES 1024
+
 
 class Entity
 {
 public:
 	Entity();
-	~Entity();
 
 	// Enums
 	enum {
-		GRASS = 0,
 		HARDWALL = 1,
-		SOFTWALL = 2,
-		BOMB = 3
+		GRASS = 2,
+		SOFTWALL = 3,
+		BOMB = 4
 	};
 
 	// Functions
-	static void SetSurface(Surface* a_Surface) { mainsurface = a_Surface; }
-	static Surface* mainsurface;
-	static void ClearSurfaces();
-	static void drawSplitScreens();
 	virtual void Update(float deltaTime) = 0;
+	static void SetSurface(Surface* a_Surface) { m_mainsurface = a_Surface; }
+	static void DrawSplitScreens();
+	static void ClearSurfaces();
 	static void UpdateEntities(float deltaTime);
-	int GetID() { return m_entityId; };
 	static void AddEntity(Entity* child);
-	void DeleteEntity(Entity* child);
-	Entity *GetChild(int index) { return m_entities[index]; };
+	static void DeleteEntity(Entity* child);
+	int GetID() const { return m_entityId; };
+	Entity* GetChild(int index) const { return m_entities[index]; };
 	Entity* GetEntityById(int ID);
-	float4 GetRectangle() { return { position.x, scale.x, position.y, scale.y }; };
+	float4 GetRectangle() const { return { position.x, scale.x, position.y, scale.y }; };
 
 	// Variables
 	float2 position;
 	float2 scale;
-	
+
 protected:
 	// Structs
 	struct SplitSurface
 	{
+		// Variables
 		Surface* surface = new Surface();
 		float offsetX, offsetY;
 	};
@@ -50,17 +51,18 @@ protected:
 	virtual void Initialise() {};
 
 	// Variables
-	Sprite* sprite;
 	static SplitSurface* surfaces[SURFACEAMOUNT];
+	Sprite* sprite;
 	bool isLiving;
 
 
 private:
 	// Variables
+	static Surface* m_mainsurface;
 	static int m_entityAmount;
-	static Entity* m_entities[1024];
+	static Entity* m_entities[MAX_ENTITIES];
 	static int m_nextEntityId;
-	int m_entityId;
 	static bool m_initialisedSurfaces;
+	int m_entityId;
 };
 

@@ -14,5 +14,5 @@ void Game::Init()
 void Game::Tick(float deltaTime)
 {
 	Entity::UpdateEntities(deltaTime);
-	Entity::drawSplitScreens();
+	Entity::DrawSplitScreens();
 }

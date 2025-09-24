@@ -2,9 +2,9 @@
 #include "Entity.h"
 #include "World.h"
 
-Surface* Entity::mainsurface;
+Surface* Entity::m_mainsurface;
 Entity::SplitSurface* Entity::surfaces[SURFACEAMOUNT];
-Entity* Entity::m_entities[1024];
+Entity* Entity::m_entities[MAX_ENTITIES];
 bool Entity::m_initialisedSurfaces = false;
 int Entity::m_nextEntityId = 0;
 int Entity::m_entityAmount = 0;
@@ -28,10 +28,24 @@ Entity::Entity()
 	scale.x = 1, scale.y = 1;
 }
 
-Entity::~Entity()
-{
 
+void Entity::DrawSplitScreens()
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		surfaces[i]->surface->CopyTo(m_mainsurface, (RNDRWIDTH / SURFACEAMOUNT) * i, 0);
+	}
 }
+
+
+void Entity::ClearSurfaces()
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		surfaces[i]->surface->Clear(0xbdbebd);
+	}
+}
+
 
 void Entity::UpdateEntities(float deltaTime)
 {
@@ -47,11 +61,13 @@ void Entity::UpdateEntities(float deltaTime)
 	}
 }
 
+
 void Entity::AddEntity(Entity* child)
 {
 	m_entities[m_entityAmount++] = child;
 	child->Initialise();
 }
+
 
 void Entity::DeleteEntity(Entity* child)
 {
@@ -79,6 +95,49 @@ void Entity::DeleteEntity(Entity* child)
 }
 
 
+void Entity::SetCameraX(int screen, int x)
+{
+	if (x > 0)
+	{
+		x = 0;
+	}
+	int a = (World::currentLevel->getMapWidth() - ((RNDRWIDTH / SURFACEAMOUNT) >> 4));
+	int b = (a * World::BLOCKSIZE) - World::BLOCKSIZE;
+	if (x < -a - b + (SURFACEAMOUNT == 1 ? -8 : 0))
+	{
+		x = -a - b + (SURFACEAMOUNT == 1 ? -8 : 0);
+	}
+	surfaces[screen]->offsetX = x;
+}
+
+
+void Entity::CopyToSurfaces(Surface* srfc, int x, int y)
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		srfc->CopyTo(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
+	}
+}
+
+
+void Entity::DrawToSurfaces(Sprite* sprt, int x, int y)
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		sprt->Draw(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
+	}
+}
+
+
+void Entity::PlotToSurfaces(int x, int y, int color)
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		surfaces[i]->surface->Plot(x + surfaces[i]->offsetX, y + surfaces[i]->offsetY, color);
+	}
+}
+
+
 Entity* Entity::GetEntityById(int id)
 {
 	for (int i = 0; i < m_entityAmount; i++)
@@ -89,59 +148,4 @@ Entity* Entity::GetEntityById(int id)
 		}
 	}
 	return nullptr;
-}
-
-void Entity::SetCameraX(int screen, int x)
-{
-	if (x > 0)
-	{
-		x = 0;
-	}
-	int a = (World::currentLevel->getMapWidth() - ((RNDRWIDTH / SURFACEAMOUNT) >> 4));
-	int b = (a * World::BLOCKSIZE) - World::BLOCKSIZE;
-	if (x < -a-b+(SURFACEAMOUNT==1?-8:0))
-	{
-		x = -a-b+(SURFACEAMOUNT==1?-8:0);
-	}
-	surfaces[screen]->offsetX = x;
-}
-
-void Entity::drawSplitScreens()
-{
-	for (int i = 0; i < SURFACEAMOUNT; i++)
-	{
-		surfaces[i]->surface->CopyTo(mainsurface, (RNDRWIDTH/SURFACEAMOUNT) * i, 0);
-	}
-}
-
-void Entity::CopyToSurfaces(Surface* srfc, int x, int y)
-{
-	for (int i = 0; i < SURFACEAMOUNT; i++)
-	{
-		srfc->CopyTo(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
-	}
-}
-
-void Entity::DrawToSurfaces(Sprite* sprt, int x, int y)
-{
-	for (int i = 0; i < SURFACEAMOUNT; i++)
-	{
-		sprt->Draw(surfaces[i]->surface, x + surfaces[i]->offsetX, y + surfaces[i]->offsetY);
-	}
-}
-
-void Entity::PlotToSurfaces(int x, int y, int color)
-{
-	for (int i = 0; i < SURFACEAMOUNT; i++)
-	{
-		surfaces[i]->surface->Plot(x + surfaces[i]->offsetX, y + surfaces[i]->offsetY, color);
-	}
-}
-
-void Entity::ClearSurfaces()
-{
-	for (int i = 0; i < SURFACEAMOUNT; i++)
-	{
-		surfaces[i]->surface->Clear(0xbdbebd);
-	}
 }

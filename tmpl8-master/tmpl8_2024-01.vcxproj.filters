@@ -41,7 +41,9 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="SoftBlock.cpp" />
+    <ClCompile Include="SoftBlock.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -84,11 +86,15 @@
     <ClInclude Include="HardBlock.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="Bomb.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="SoftBlock.h" />
+    <ClInclude Include="SoftBlock.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">

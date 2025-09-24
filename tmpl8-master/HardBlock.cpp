@@ -10,10 +10,6 @@ HardBlock::HardBlock(float2 setposition)
 	scale = { 16, 16 };
 }
 
-HardBlock::~HardBlock()
-{
-
-}
 
 void HardBlock::Update(float deltaTime)
 {

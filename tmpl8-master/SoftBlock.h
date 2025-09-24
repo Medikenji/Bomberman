@@ -1,15 +1,24 @@
 #pragma once
 #include "Entity.h"
+
+class World;
+
 class SoftBlock : public Entity
 {
 public:
 	SoftBlock(float2 setposition);
-	~SoftBlock();
 
 	// Functions
 	void Update(float deltaTime);
 
 private:
-	static Sprite* m_sprite;
+	// Functions
+	virtual void Initialise();
+	bool BeDestroyed(float deltaTime);
+
+	// Variables
+	World* m_currentWorld;
+	float m_animationTimer;
+	int m_currentFrame;
 };
 

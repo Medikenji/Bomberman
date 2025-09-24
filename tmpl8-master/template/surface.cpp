@@ -150,7 +150,7 @@ void Surface::Line( float x1, float y1, float x2, float y2, uint c )
 
 // Surface::CopyTo: Copy the contents of one Surface to another, at the specified
 // location. With clipping.
-void Surface::CopyTo( Surface* d, int x, int y )
+void Surface::CopyTo( Surface* d, int x, int y )const
 {
 	uint* dst = d->pixels;
 	uint* src = pixels;

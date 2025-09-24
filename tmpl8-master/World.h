@@ -5,42 +5,54 @@
 struct Level
 {
 public:
-	Level(int _mapWidth, int _mapHeight) { mapWidth = _mapWidth;  mapHeight = _mapHeight; mapSize = mapWidth * mapHeight; };
-	UINT8 (*mapData)[50];
-	int getMapWidth() { return mapWidth; };
-	int getMapHeight() { return mapHeight; };
-	int getMapSize() { return mapSize; };
+	Level(int _mapWidth, int _mapHeight) { m_mapWidth = _mapWidth;  m_mapHeight = _mapHeight; m_mapSize = m_mapWidth * m_mapHeight; };
+
+	// Functions
+	int getMapWidth() const { return m_mapWidth; };
+	int getMapHeight() const { return m_mapHeight; };
+	int getMapSize() const { return m_mapSize; };
+
+	// Varbiables
+	UINT8(*mapData)[26];
+
 private:
-	int mapWidth;
-	int mapHeight;
-	int mapSize;
+	// Variables
+	int m_mapWidth;
+	int m_mapHeight;
+	int m_mapSize;
 };
 
 class World : public Entity
 {
 public:
 	World();
+
+	// Functions
 	void Update(float deltaTime);
-	void PlaceBomb(float2 position);
-	void ExplodeBomb(UINT8* gridposition);
-	int GetCurrentBlock(float2 position);
-	UINT8 GetCurrentBlockFromGrid(int2 gridposition);
-	float2 GetPixelPosFromGrid(int2 gridPosition);
-	static Level* currentLevel;
+	bool PlaceBomb(float2 position);
+	bool ExplodeBomb(int2 gridposition);
 	static int GetLevelWidth() { return currentLevel->getMapWidth(); };
-	UINT8* GetGridPos(float2& pixelPos);
-	Level* level1;
+	UINT8* GetGridPos(float2& pixelPos) const;
+	int GetCurrentBlock(float2 position) const;
+	UINT8 GetCurrentBlockFromGrid(int2 gridposition) const;
+	float2 GetPixelPosFromGrid(int2 gridPosition) const;
+
+	// Variables
 	static const int BLOCKSIZE = 16;
 	static const int SOFTBLOCKPERCENTAGE = 30;
+	static Level* currentLevel;
 
 private:
+	// Functions
 	virtual void Initialise();
 	bool DrawMap();
 	bool InitialiseLevels();
-	//void HandleColl
-	const int margin = 32;
+
+	// Variables
+	const int m_MARGIN = 32;
+	Level* m_level1;
+	Surface* m_grass;
 	int m_maxBombAmount;
 	int m_bombAmount;
-	Surface* m_grass;
 	bool m_blocksGenerated;
 };
