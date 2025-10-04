@@ -4,15 +4,14 @@
 
 #include "precomp.h"
 #include "game.h"
+#include "SceneManager.h"
 
 void Game::Init()
 {
-	Entity::SetSurface(screen);
-	Entity::AddEntity(new World());
+	m_sceneManager = new SceneManager(screen);
 }
 
-void Game::Tick(float deltaTime)
+void Game::Tick(float _deltaTime)
 {
-	Entity::UpdateEntities(deltaTime);
-	Entity::DrawSplitScreens();
+	m_sceneManager->Run(_deltaTime);
 }

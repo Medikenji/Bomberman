@@ -6,26 +6,28 @@ class World;
 class Bomb : public Entity
 {
 public:
-	Bomb(float2 Position);
+	Bomb(float2 _bombPosition);
+	~Bomb();
 
 	// Functions
-	void Update(float deltaTime);
+	void Update(float _deltaTime);
 
 private:
 	// Funtions
 	virtual void Initialise();
-	bool ExplodeAnimation(float deltaTime);
+	bool ExplodeAnimation(float _deltaTime);
 	bool Explode();
 
 	// Variables
-	World* m_currentWorld;
+	World* m_currentWorld = nullptr;
 	float m_timer;
 };
 
 class BombExplosion : public Entity
 {
 public:
-	BombExplosion(float2 setposition, int type);
+	BombExplosion(float2 _explosionPosition, int _explosionSide);
+	~BombExplosion();
 
 	// Enums
 	enum {
@@ -41,11 +43,11 @@ public:
 	};
 
 	// Functions
-	void Update(float deltaTime);
+	void Update(float _deltaTime);
 
 private:
 	// Functions
-	bool ExplodeAnimation(float deltaTime);
+	bool ExplodeAnimation(float _deltaTime);
 
 	// Variables
 	static const UINT8 m_spriteAmount = 4;

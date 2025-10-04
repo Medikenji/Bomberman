@@ -2,9 +2,9 @@
 #include "SoftBlock.h"
 #include "World.h"
 
-SoftBlock::SoftBlock(float2 setposition)
+SoftBlock::SoftBlock(float2 _blockPosition)
 {
-	position = setposition;
+	position = _blockPosition;
 	// artificial width and height
 	scale = { 16, 16 };
 	sprite = new Sprite(new Surface("assets/SoftBlock.png"), 7);;
@@ -13,26 +13,35 @@ SoftBlock::SoftBlock(float2 setposition)
 	m_animationTimer = 0.1f;
 }
 
+
+SoftBlock::~SoftBlock()
+{
+	delete sprite;
+}
+
+
 void SoftBlock::Initialise()
 {
-	m_currentWorld = static_cast<World*>(GetEntityById(0));
+	m_currentWorld = static_cast<World*>(container->GetEntityById(0));
 }
 
-void SoftBlock::Update(float deltaTime)
+
+void SoftBlock::Update(float _deltaTime)
 {
-	DrawToSurfaces(sprite, position.x, position.y);
-	if (m_currentWorld->GetCurrentBlock(position) != Entity::SOFTWALL)
-		BeDestroyed(deltaTime);
+	container->DrawToSurfaces(sprite, position);
+	if (m_currentWorld->GetCurrentBlock(position) != World::Block::SOFTWALL)
+		BeDestroyed(_deltaTime);
 }
 
-bool SoftBlock::BeDestroyed(float deltaTime)
+
+bool SoftBlock::BeDestroyed(float _deltaTime)
 {
-	m_animationTimer -= deltaTime;
+	m_animationTimer -= _deltaTime;
 	if (m_animationTimer < 0)
 	{
 		if (++m_currentFrame == 7)
 		{
-			Entity::DeleteEntity(this);
+			container->DeleteEntity(this);
 			return true;
 		}
 		m_animationTimer = 0.1f;

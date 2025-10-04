@@ -6,7 +6,7 @@ class Collision
 {
 public:
 	// Functions
-	static bool RecToRec(float4 rec1, float4 rec2);
-	static bool PointToRec(float2 point, float4 rec);
+	static bool RecToRec(float4 _rec1, float4 _rec2);
+	static bool PointToRec(float2 _point, float4 _rec);
 };
 

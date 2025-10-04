@@ -121,12 +121,15 @@
   </ItemDefinitionGroup>
   <!-- END Custom section -->
   <ItemGroup>
+    <ClCompile Include="Ballom.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BomberMan.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoftBlock.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
@@ -146,13 +149,16 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ballom.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="BomberMan.h" />
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="HardBlock.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoftBlock.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />

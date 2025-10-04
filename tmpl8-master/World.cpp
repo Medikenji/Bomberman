@@ -4,60 +4,66 @@
 #include "SoftBlock.h"
 #include "BomberMan.h"
 #include "Bomb.h"
+#include "Ballom.h"
 
-Level* World::currentLevel;
+Level World::m_level;
 
 World::World() {
-	srand(time(0));
+	srand((unsigned int)time(0));
 	m_maxBombAmount = 1;
 	m_bombAmount = 0;
-	m_blocksGenerated = false;
 	position.y = 32;
 	m_grass = new Surface("assets/Grass.png");
-	InitialiseLevels();
-	currentLevel = m_level1;
 }
 
 
 void World::Initialise()
 {
 	for (int i = 0; i < SURFACEAMOUNT; i++)
-		AddEntity(new BomberMan());
+	{
+		container->AddEntity(new BomberMan());
+	}
+	GenerateMap();
+	for (int i = 0; i < 2000; i++)
+	{
+		container->AddEntity(new Ballom({ position.x + 16,position.y + 32 }));
+	}
 }
 
 
-void World::Update(float deltaTime)
+void World::Update(float _deltaTime)
 {
 	DrawMap();
 }
 
 
-bool World::PlaceBomb(float2 position)
+bool World::PlaceBomb(float2 _position)
 {
 	if (m_bombAmount < m_maxBombAmount)
 	{
-		UINT8* gridPos = GetGridPos(position);
-		if (currentLevel->mapData[gridPos[1]][gridPos[0]] != Entity::GRASS)
+		uint2 intGridPos = GetGridPos(_position);
+		UINT8 gridPos[2] = { (UINT8)intGridPos.x, (UINT8)intGridPos.y };
+		if (m_level.mapData[gridPos[1]][gridPos[0]] != World::Block::GRASS)
 			return true;
 
-		currentLevel->mapData[gridPos[1]][gridPos[0]] = Entity::BOMB;
-		AddEntity(new Bomb(GetPixelPosFromGrid({ gridPos[0], gridPos[1] })));
+		m_level.mapData[gridPos[1]][gridPos[0]] = World::Block::BOMB;
+		container->AddEntity(new Bomb(GetPixelPosFromGrid({ gridPos[0], gridPos[1] })));
 		m_bombAmount++;
 	}
 	return true;
 }
 
 
-bool World::ExplodeBomb(int2 gridposition)
+bool World::ExplodeBomb(uint2 _gridPosition)
 {
 	const int DIRX[4] = { -1, 0, 1, 0 };
 	const int DIRY[4] = { 0, -1, 0, 1 };
 
-	UINT8 explosionSize = 5;
-	UINT8 bombPos[2] = { gridposition.y,gridposition.x };
-	float2 bombPixelPos = GetPixelPosFromGrid({ gridposition.y,gridposition.x });
+	UINT8 explosionSize = 1;
+	UINT8 bombPos[2] = { (UINT8)_gridPosition.x,(UINT8)_gridPosition.y };
+	float2 bombPixelPos = GetPixelPosFromGrid({ (int)_gridPosition.x,(int)_gridPosition.y });
 
-	Entity::AddEntity(new BombExplosion(bombPixelPos, BombExplosion::MIDDLE));
+	container->AddEntity(new BombExplosion(bombPixelPos, BombExplosion::MIDDLE));
 	for (int d = 0; d < 4; ++d)
 	{
 		// Check sides for blocks to break
@@ -66,11 +72,11 @@ bool World::ExplodeBomb(int2 gridposition)
 			int x = bombPos[0] + DIRX[d] * i;
 			int y = bombPos[1] + DIRY[d] * i;
 			bombPixelPos = GetPixelPosFromGrid({ x,y });
-			UINT8& cell = currentLevel->mapData[y][x];
-			if (cell == Entity::HARDWALL) break;
-			if (cell == Entity::SOFTWALL)
+			UINT8& cell = m_level.mapData[y][x];
+			if (cell == World::Block::HARDWALL) break;
+			if (cell == World::Block::SOFTWALL)
 			{
-				cell = Entity::GRASS;
+				cell = World::Block::GRASS;
 				break;
 			}
 
@@ -79,14 +85,14 @@ bool World::ExplodeBomb(int2 gridposition)
 			// Spawn in explosion
 			if (i == explosionSize)
 			{
-				Entity::AddEntity(new BombExplosion(bombPixelPos, side - 1));
+				container->AddEntity(new BombExplosion(bombPixelPos, side - 1));
 				break;
 			}
-			Entity::AddEntity(new BombExplosion(bombPixelPos, side));
+			container->AddEntity(new BombExplosion(bombPixelPos, side));
 		}
 	}
 
-	currentLevel->mapData[bombPos[1]][bombPos[0]] = Entity::GRASS;
+	m_level.mapData[bombPos[1]][bombPos[0]] = World::Block::GRASS;
 	m_bombAmount--;
 	return true;
 }
@@ -94,114 +100,91 @@ bool World::ExplodeBomb(int2 gridposition)
 
 bool World::DrawMap()
 {
-	for (int j = 0; j < currentLevel->getMapHeight(); j++)
+	for (int j = 0; j < m_level.GetMapHeight(); j++)
 	{
-		for (int i = 0; i < currentLevel->getMapWidth(); i++)
+		for (int i = 0; i < m_level.GetMapWidth(); i++)
 		{
-			float x = (i * BLOCKSIZE) + position.x;
-			float y = (j * BLOCKSIZE) + position.y;
-			if (currentLevel->mapData[j][i] == 2)
+			const float x = (float)(i * BLOCKSIZE) + position.x;
+			const float y = (float)(j * BLOCKSIZE) + position.y;
+			float2 drawPosition = { x,y };
+			if (m_level.mapData[j][i] == World::Block::GRASS || m_level.mapData[j][i] == World::Block::BOMB)
 			{
-				if (rand() % 100 < SOFTBLOCKPERCENTAGE && !m_blocksGenerated && j * i > 4)
-				{
-					currentLevel->mapData[j][i] = Entity::SOFTWALL;
-				}
-			}
-			if (currentLevel->mapData[j][i] == Entity::GRASS || currentLevel->mapData[j][i] == Entity::BOMB)
-			{
-				CopyToSurfaces(m_grass, x, y);
-			}
-			if (currentLevel->mapData[j][i] == Entity::HARDWALL && !m_blocksGenerated)
-			{
-				AddEntity(new HardBlock({ x,y }));
-			}
-			if (currentLevel->mapData[j][i] == Entity::SOFTWALL && !m_blocksGenerated)
-			{
-				AddEntity(new SoftBlock({ x,y }));
+				container->CopyToSurfaces(m_grass, drawPosition);
 			}
 		}
 	}
-	m_blocksGenerated = true;
 	return true;
 }
 
 
-bool World::InitialiseLevels()
+bool World::GenerateMap()
 {
-	m_level1 = new Level(25, 13);
-	m_level1->mapData = new UINT8[13][26]
+	for (int j = 0; j < m_level.GetMapHeight(); j++)
 	{
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
-		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-	};
+		for (int i = 0; i < m_level.GetMapWidth(); i++)
+		{
+			const float x = (float)(i * BLOCKSIZE) + position.x;
+			const float y = (float)(j * BLOCKSIZE) + position.y;
+			float2 drawPosition = { x,y };
+			if (m_level.mapData[j][i] == 2)
+			{
+				if (rand() % 100 < SOFTBLOCKPERCENTAGE && j * i > 4)
+				{
+					m_level.mapData[j][i] = World::Block::SOFTWALL;
+					//container->AddEntity(new Ballom(drawPosition));
+
+				}
+			}
+			if (m_level.mapData[j][i] == World::Block::HARDWALL)
+			{
+				container->AddEntity(new HardBlock({ x,y }));
+			}
+			if (m_level.mapData[j][i] == World::Block::SOFTWALL)
+			{
+				container->AddEntity(new SoftBlock({ x,y }));
+			}
+		}
+	}
 	return true;
 }
 
 
-UINT8* World::GetGridPos(float2& pixelPos) const {
-	int x = (int)(pixelPos.x / BLOCKSIZE);
-	int y = (int)(pixelPos.y / BLOCKSIZE) - position.y / BLOCKSIZE;
-	UINT8 gridPos[2] = { x,y };
-	return gridPos;
+uint2 World::GetGridPos(float2 _pixelPosition) const {
+	int x = (int)(_pixelPosition.x / BLOCKSIZE);
+	int y = (int)((_pixelPosition.y / BLOCKSIZE) - position.y / BLOCKSIZE);
+	return { x,y };
 }
 
 
-int World::GetCurrentBlock(float2 position) const
+UINT8 World::GetCurrentBlock(float2 _pixelPosition) const
 {
-	switch (currentLevel->mapData[GetGridPos(position)[1]][GetGridPos(position)[0]])
+	switch (m_level.mapData[GetGridPos(_pixelPosition).y][GetGridPos(_pixelPosition).x])
 	{
-	case Entity::HARDWALL:
-		return Entity::HARDWALL;
+	case World::Block::HARDWALL:
+		return World::Block::HARDWALL;
 		break;
-	case Entity::GRASS:
-		return Entity::GRASS;
+	case World::Block::GRASS:
+		return World::Block::GRASS;
 		break;
-	case Entity::SOFTWALL:
-		return Entity::SOFTWALL;
+	case World::Block::SOFTWALL:
+		return World::Block::SOFTWALL;
 		break;
 	default:
-		return -1;
+		return 255;
 		break;
-		return 0;
 	}
 }
 
 
-UINT8 World::GetCurrentBlockFromGrid(int2 gridposition) const
+UINT8 World::GetCurrentBlockFromGrid(uint2 _gridPosition) const
 {
-	switch (currentLevel->mapData[gridposition.y][gridposition.x])
-	{
-	case Entity::HARDWALL:
-		return Entity::HARDWALL;
-		break;
-	case Entity::GRASS:
-		return Entity::GRASS;
-		break;
-	case Entity::SOFTWALL:
-		return Entity::SOFTWALL;
-		break;
-	default:
-		return -1;
-		break;
-		return 0;
-	}
+	return m_level.mapData[_gridPosition.y][_gridPosition.x];
 }
 
 
-float2 World::GetPixelPosFromGrid(int2 gridPosition) const
+float2 World::GetPixelPosFromGrid(uint2 _gridPosition) const
 {
-	float x = gridPosition.x * BLOCKSIZE + position.x;
-	float y = gridPosition.y * BLOCKSIZE + position.y;
+	float x = _gridPosition.x * BLOCKSIZE + position.x;
+	float y = _gridPosition.y * BLOCKSIZE + position.y;
 	return { x,y };
 }
