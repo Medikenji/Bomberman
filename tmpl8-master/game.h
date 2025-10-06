@@ -12,7 +12,7 @@ public:
 	// game flow methods
 	void Init();
 	void Tick(float deltaTime);
-	void Shutdown() { /* implement if you want to do something on exit */ }
+	void Shutdown();
 	//void DrawBackdrop();
 	//void HandleKeys();
 	// input handling

@@ -15,3 +15,8 @@ void Game::Tick(float _deltaTime)
 {
 	m_sceneManager->Run(_deltaTime);
 }
+
+void Game::Shutdown()
+{
+	delete m_sceneManager;
+}

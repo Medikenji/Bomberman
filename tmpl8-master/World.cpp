@@ -6,14 +6,21 @@
 #include "Bomb.h"
 #include "Ballom.h"
 
-Level World::m_level;
 
 World::World() {
 	srand((unsigned int)time(0));
 	m_maxBombAmount = 1;
 	m_bombAmount = 0;
 	position.y = 32;
+	m_level = new Level();
 	m_grass = new Surface("assets/Grass.png");
+}
+
+
+World::~World()
+{
+	delete m_level;
+	delete m_grass;
 }
 
 
@@ -43,10 +50,10 @@ bool World::PlaceBomb(float2 _position)
 	{
 		uint2 intGridPos = GetGridPos(_position);
 		UINT8 gridPos[2] = { (UINT8)intGridPos.x, (UINT8)intGridPos.y };
-		if (m_level.mapData[gridPos[1]][gridPos[0]] != World::Block::GRASS)
+		if (m_level->mapData[gridPos[1]][gridPos[0]] != World::Block::GRASS)
 			return true;
 
-		m_level.mapData[gridPos[1]][gridPos[0]] = World::Block::BOMB;
+		m_level->mapData[gridPos[1]][gridPos[0]] = World::Block::BOMB;
 		container->AddEntity(new Bomb(GetPixelPosFromGrid({ gridPos[0], gridPos[1] })));
 		m_bombAmount++;
 	}
@@ -72,7 +79,7 @@ bool World::ExplodeBomb(uint2 _gridPosition)
 			int x = bombPos[0] + DIRX[d] * i;
 			int y = bombPos[1] + DIRY[d] * i;
 			bombPixelPos = GetPixelPosFromGrid({ x,y });
-			UINT8& cell = m_level.mapData[y][x];
+			UINT8& cell = m_level->mapData[y][x];
 			if (cell == World::Block::HARDWALL) break;
 			if (cell == World::Block::SOFTWALL)
 			{
@@ -92,7 +99,7 @@ bool World::ExplodeBomb(uint2 _gridPosition)
 		}
 	}
 
-	m_level.mapData[bombPos[1]][bombPos[0]] = World::Block::GRASS;
+	m_level->mapData[bombPos[1]][bombPos[0]] = World::Block::GRASS;
 	m_bombAmount--;
 	return true;
 }
@@ -100,14 +107,14 @@ bool World::ExplodeBomb(uint2 _gridPosition)
 
 bool World::DrawMap()
 {
-	for (int j = 0; j < m_level.GetMapHeight(); j++)
+	for (int j = 0; j < m_level->MAP_HEIGHT; j++)
 	{
-		for (int i = 0; i < m_level.GetMapWidth(); i++)
+		for (int i = 0; i < m_level->MAP_WIDTH; i++)
 		{
 			const float x = (float)(i * BLOCKSIZE) + position.x;
 			const float y = (float)(j * BLOCKSIZE) + position.y;
 			float2 drawPosition = { x,y };
-			if (m_level.mapData[j][i] == World::Block::GRASS || m_level.mapData[j][i] == World::Block::BOMB)
+			if (m_level->mapData[j][i] == World::Block::GRASS || m_level->mapData[j][i] == World::Block::BOMB)
 			{
 				container->CopyToSurfaces(m_grass, drawPosition);
 			}
@@ -119,27 +126,27 @@ bool World::DrawMap()
 
 bool World::GenerateMap()
 {
-	for (int j = 0; j < m_level.GetMapHeight(); j++)
+	for (int j = 0; j < m_level->MAP_HEIGHT; j++)
 	{
-		for (int i = 0; i < m_level.GetMapWidth(); i++)
+		for (int i = 0; i < m_level->MAP_WIDTH; i++)
 		{
 			const float x = (float)(i * BLOCKSIZE) + position.x;
 			const float y = (float)(j * BLOCKSIZE) + position.y;
 			float2 drawPosition = { x,y };
-			if (m_level.mapData[j][i] == 2)
+			if (m_level->mapData[j][i] == 2)
 			{
 				if (rand() % 100 < SOFTBLOCKPERCENTAGE && j * i > 4)
 				{
-					m_level.mapData[j][i] = World::Block::SOFTWALL;
+					m_level->mapData[j][i] = World::Block::SOFTWALL;
 					//container->AddEntity(new Ballom(drawPosition));
 
 				}
 			}
-			if (m_level.mapData[j][i] == World::Block::HARDWALL)
+			if (m_level->mapData[j][i] == World::Block::HARDWALL)
 			{
 				container->AddEntity(new HardBlock({ x,y }));
 			}
-			if (m_level.mapData[j][i] == World::Block::SOFTWALL)
+			if (m_level->mapData[j][i] == World::Block::SOFTWALL)
 			{
 				container->AddEntity(new SoftBlock({ x,y }));
 			}
@@ -158,7 +165,7 @@ uint2 World::GetGridPos(float2 _pixelPosition) const {
 
 UINT8 World::GetCurrentBlock(float2 _pixelPosition) const
 {
-	switch (m_level.mapData[GetGridPos(_pixelPosition).y][GetGridPos(_pixelPosition).x])
+	switch (m_level->mapData[GetGridPos(_pixelPosition).y][GetGridPos(_pixelPosition).x])
 	{
 	case World::Block::HARDWALL:
 		return World::Block::HARDWALL;
@@ -178,7 +185,7 @@ UINT8 World::GetCurrentBlock(float2 _pixelPosition) const
 
 UINT8 World::GetCurrentBlockFromGrid(uint2 _gridPosition) const
 {
-	return m_level.mapData[_gridPosition.y][_gridPosition.x];
+	return m_level->mapData[_gridPosition.y][_gridPosition.x];
 }
 
 

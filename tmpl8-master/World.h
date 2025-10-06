@@ -6,13 +6,11 @@ class EntityContainer;
 struct Level
 {
 public:
-	// Functions
-	int GetMapWidth() const { return m_mapWidth; };
-	int GetMapHeight() const { return m_mapHeight; };
-	int GetMapSize() const { return m_mapSize; };
-
 	// Varbiables
-	UINT8 mapData[13][25] = {
+	static const int MAP_WIDTH = 25;
+	static const int MAP_HEIGHT = 13;
+	static const int MAP_SIZE = MAP_WIDTH * MAP_HEIGHT;
+	UINT8 mapData[MAP_HEIGHT][MAP_WIDTH] = {
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
 		{ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 },
@@ -27,21 +25,16 @@ public:
 		{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 	};
-
-private:
-	// Variables
-	const int m_mapWidth = 25;
-	const int m_mapHeight = 13;
-	const int m_mapSize = m_mapWidth * m_mapHeight;
 };
 
 class World : public Entity
 {
 public:
 	World();
+	~World();
 
 	// Enums
-	enum Block{
+	enum Block {
 		HARDWALL = 1,
 		GRASS = 2,
 		SOFTWALL = 3,
@@ -53,7 +46,6 @@ public:
 	void Update(float _deltaTime);
 	bool PlaceBomb(float2 _position);
 	bool ExplodeBomb(uint2 _gridPosition);
-	static Level GetLevel() { return m_level; };
 	uint2 GetGridPos(float2 _pixelPosition) const;
 	UINT8 GetCurrentBlock(float2 _pixelPosition) const;
 	UINT8 GetCurrentBlockFromGrid(uint2 _gridPosition) const;
@@ -72,7 +64,7 @@ private:
 	// Variables
 	const int m_MARGIN = 32;
 	Surface* m_grass;
-	static Level m_level;
+	Level* m_level;
 	int m_maxBombAmount;
 	int m_bombAmount;
 };

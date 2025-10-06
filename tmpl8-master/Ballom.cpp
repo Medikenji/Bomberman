@@ -8,7 +8,7 @@ Ballom::Ballom(float2 _ballomPosition)
 	scale = 16;
 	m_speed = 25.0f;
 	m_direction = rand() % 2;
-	m_directionTimer = (rand() % 9) + 1;
+	m_directionTimer = (float)((rand() % 9) + 1);
 	sprite = new Sprite(new Surface("assets/Ballom.png"), 11);
 }
 
@@ -45,7 +45,7 @@ void Ballom::SwitchSide()
 	{
 		position.y = m_currentWorld->GetPixelPosFromGrid(tilePosition).y;
 	}
-	m_directionTimer = (rand() % 9) + 1;
+	m_directionTimer = (float)((rand() % 9) + 1);
 	m_direction = !m_direction;
 }
 

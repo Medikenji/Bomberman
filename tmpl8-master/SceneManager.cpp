@@ -12,7 +12,11 @@ SceneManager::SceneManager(Surface* _screen)
 
 SceneManager::~SceneManager()
 {
-
+	for (int i = 0; i < MAX_SCENES; i++)
+	{
+		delete m_scenes[i]->container;
+		delete m_scenes[i];
+	}
 }
 
 
@@ -25,7 +29,7 @@ void SceneManager::Run(float _deltaTime)
 }
 
 
-void SceneManager::SwitchScene(int _scene)
+void SceneManager::SwitchScene(UINT8 _scene)
 {
 	switch (_scene)
 	{

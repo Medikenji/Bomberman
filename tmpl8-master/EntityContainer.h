@@ -10,6 +10,7 @@ class EntityContainer
 {
 public:
 	EntityContainer();
+	~EntityContainer();
 
 	Entity* GetChild(int _entityIndex) const { return m_entities[_entityIndex]; };
 

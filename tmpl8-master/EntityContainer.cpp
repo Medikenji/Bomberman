@@ -18,6 +18,19 @@ EntityContainer::EntityContainer()
 }
 
 
+EntityContainer::~EntityContainer()
+{
+	for (int i = 0; i < SURFACEAMOUNT; i++)
+	{
+		delete surfaces[i];
+	}
+	for (int i = 0; i < m_entityAmount; i++)
+	{
+		delete m_entities[i];
+	}
+}
+
+
 void EntityContainer::UpdateEntities(float _deltaTime)
 {
 	for (int i = 0; i < m_entityAmount; i++)
@@ -88,7 +101,7 @@ void EntityContainer::SetCameraX(int _targetScreen, int _offsetX)
 	{
 		offsetX = 0;
 	}
-	int a = (World::GetLevel().GetMapWidth() - ((RNDRWIDTH / SURFACEAMOUNT) >> 4));
+	int a = (Level::MAP_WIDTH - ((RNDRWIDTH / SURFACEAMOUNT) >> 4));
 	int b = (a * World::BLOCKSIZE) - World::BLOCKSIZE;
 	if (offsetX < -a - b + (SURFACEAMOUNT == 1 ? -8 : 0))
 	{
