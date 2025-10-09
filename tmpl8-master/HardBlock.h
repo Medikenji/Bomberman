@@ -7,10 +7,11 @@ public:
 	HardBlock(float2 _blockPosition);
 	~HardBlock() {};
 
+private:
 	// Functions
 	void Update(float _deltaTime);
 
-private:
+
 	// Variables
 	static Surface m_texture;
 };

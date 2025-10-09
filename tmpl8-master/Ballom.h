@@ -1,9 +1,9 @@
 #pragma once
-#include "Entity.h"
+#include "Enemy.h"
 
 class World;
 
-class Ballom :    public Entity
+class Ballom : public Enemy
 {
 public:
 	Ballom(float2 _ballomPosition);
@@ -14,18 +14,19 @@ public:
 
 private:
 	// Functions
-	void Initialise();
+	void Initialize();
 	void SwitchSide();
 	void AttemptSwitch();
 	void Move(float _deltaTime);
 
-	// Variables
+	// Enums
 	enum Direction
 	{
 		X = 0,
 		Y = 1
 	};
 
+	// Variables
 	World* m_currentWorld = nullptr;
 	bool m_direction;
 	float m_speed;

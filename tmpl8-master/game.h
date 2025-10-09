@@ -10,6 +10,7 @@ class Game : public TheApp
 {
 public:
 	// game flow methods
+	Game(GLFWwindow* _window) { m_window = _window; };
 	void Init();
 	void Tick(float deltaTime);
 	void Shutdown();
@@ -23,8 +24,10 @@ public:
 	void KeyUp(int) { /* implement if you want to handle keys */ }
 	void KeyDown(int) { /* implement if you want to handle keys */ }
 	// data members
+	static void CloseProgram() { glfwSetWindowShouldClose(m_window, 1); };
 	int2 mousePos;
 
 private:
 	SceneManager* m_sceneManager = nullptr;
+	static GLFWwindow* m_window;
 };

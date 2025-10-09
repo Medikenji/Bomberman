@@ -81,6 +81,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
       <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</OpenMPSupport>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -121,14 +122,18 @@
   </ItemDefinitionGroup>
   <!-- END Custom section -->
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Ballom.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BomberMan.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DeathScreen.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoftBlock.cpp" />
     <ClCompile Include="template\opencl.cpp" />
@@ -149,15 +154,19 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Ballom.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="BomberMan.h" />
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="DeathScreen.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="HardBlock.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoftBlock.h" />
     <ClInclude Include="template\common.h" />

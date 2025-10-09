@@ -14,19 +14,21 @@ public:
 
 private:
 	// Funtions
-	virtual void Initialise();
-	bool ExplodeAnimation(float _deltaTime);
+	virtual void Initialize();
+	bool Animation(float _deltaTime);
 	bool Explode();
 
 	// Variables
 	World* m_currentWorld = nullptr;
-	float m_timer;
+	int m_animationFrame;
+	float m_explosionTimer;
+	float m_animationTimer;
 };
 
 class BombExplosion : public Entity
 {
 public:
-	BombExplosion(float2 _explosionPosition, int _explosionSide);
+	BombExplosion(float2 _explosionPosition, int _explosionSide, Entity** _killableEntities, int _killableEntitiesAmount);
 	~BombExplosion();
 
 	// Enums
@@ -51,6 +53,9 @@ private:
 
 	// Variables
 	static const UINT8 m_spriteAmount = 4;
+	Entity* m_killableEntities[32] = { nullptr };
+	float4 m_hitbox;
+	int m_killableEntitiesAmount;
 	int m_explosionType;
 	int m_animationFrame;
 	float m_animationTimer;

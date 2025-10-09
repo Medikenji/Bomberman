@@ -9,13 +9,15 @@ public:
 	Entity();
 	virtual ~Entity() {};
 
+
 	// Functions
 	virtual void Update(float _deltaTime) = 0;
-	virtual void Initialise() {};
+	virtual void Initialize() {};
+	virtual void Die() {};
 	int GetID() const { return m_entityId; };
 	void SetEntityID(int _ID);
 	void SetContainer(EntityContainer* _container);
-	float4 GetRectangle() const { return { position.x, scale.x, position.y, scale.y }; };
+	float4 GetRectangle() const { return { position.x, position.y, scale.x, scale.y }; };
 
 	// Variables
 	float2 position;
@@ -28,6 +30,7 @@ protected:
 	Sprite* sprite = nullptr;
 
 private:
+	// Variables
 	int m_entityId;
 };
 

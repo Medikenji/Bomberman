@@ -20,7 +20,7 @@ SoftBlock::~SoftBlock()
 }
 
 
-void SoftBlock::Initialise()
+void SoftBlock::Initialize()
 {
 	m_currentWorld = static_cast<World*>(container->GetEntityById(0));
 }

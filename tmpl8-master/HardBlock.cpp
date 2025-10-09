@@ -11,7 +11,7 @@ HardBlock::HardBlock(float2 _blockPosition)
 }
 
 
-void HardBlock::Update(float _deltaTime)
+void HardBlock::Update(float)
 {
 	container->CopyToSurfaces(&m_texture, position);
 }

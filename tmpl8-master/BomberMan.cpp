@@ -2,16 +2,15 @@
 #include "BomberMan.h"
 #include "World.h"
 #include "Collision.h"
+#include "SceneManager.h"
 
-int BomberMan::m_nextBomberId = 0;
-
-BomberMan::BomberMan() {
+BomberMan::BomberMan(int _bomberId) {
+	m_bomberId = _bomberId;
 	isLiving = true;
 	sprite = new Sprite(new Surface("assets/Bomberman.png"), 19);
 	m_animationState = 0;
 	m_animationTimer = 0;
 	m_animationSwitch = true;
-	m_bomberId = m_nextBomberId++;
 	position.x = 16;
 	position.y = 48;
 	// artificial width and height
@@ -20,7 +19,7 @@ BomberMan::BomberMan() {
 }
 
 
-void BomberMan::Initialise()
+void BomberMan::Initialize()
 {
 	m_currentWorld = static_cast<World*>(container->GetEntityById(0));
 }
@@ -35,10 +34,19 @@ void BomberMan::Update(float _deltaTime)
 	position.y += v_y;
 	TileCollision();
 	SetAnimation(v_x, v_y);
-	container->SetCameraX(m_bomberId, (int)( - position.x + RNDRWIDTH / SURFACEAMOUNT / 2 - scale.x / 2));
+	container->SetCameraX(m_bomberId, (int)( - position.x + RNDRWIDTH / EntityContainer::GetSurfaceAmount() / 2 - scale.x / 2));
 	container->DrawToSurfaces(sprite, position);
 }
 
+
+void BomberMan::SetPlayers(BomberMan** _players, int _playerAmount)
+{
+	if (m_players != nullptr) {
+		return;
+	}
+	m_playerAmount = _playerAmount;
+	m_players = _players; 
+}
 
 bool BomberMan::TileCollision()
 {
@@ -183,4 +191,10 @@ bool BomberMan::Input(float deltaTime, float* _velocityX, float* _velocityY)
 		if (GetAsyncKeyState(GLFW_KEY_D)) *_velocityX += 45 * deltaTime;
 	}
 	return true;
+}
+
+void BomberMan::Die()
+{
+	container->GetSceneManager()->ChangeScene(15);
+	container->DeleteEntity(this);
 }

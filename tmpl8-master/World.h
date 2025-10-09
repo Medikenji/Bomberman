@@ -3,6 +3,12 @@
 
 class EntityContainer;
 
+struct EnemyList {
+	EnemyList(UINT8 _ballom, UINT8 _dahl) : ballom_amount(_ballom), dahl_amount(_dahl) {};
+	UINT8 ballom_amount = 0;
+	UINT8 dahl_amount = 0;
+};
+
 struct Level
 {
 public:
@@ -30,7 +36,7 @@ public:
 class World : public Entity
 {
 public:
-	World();
+	World(EnemyList* _list);
 	~World();
 
 	// Enums
@@ -41,9 +47,7 @@ public:
 		BOMB = 4
 	};
 
-
 	// Functions
-	void Update(float _deltaTime);
 	bool PlaceBomb(float2 _position);
 	bool ExplodeBomb(uint2 _gridPosition);
 	uint2 GetGridPos(float2 _pixelPosition) const;
@@ -57,14 +61,19 @@ public:
 
 private:
 	// Functions
-	virtual void Initialise();
+	void Update(float _deltaTime);
+	virtual void Initialize();
 	bool DrawMap();
 	bool GenerateMap();
+	Entity* AddKillableEntity(Entity* _entity);
 
 	// Variables
-	const int m_MARGIN = 32;
+	static const int MARGIN = 32;
+	Entity* m_killableEntities[32] = { nullptr };
+	int m_killableEntitiesAmount;
 	Surface* m_grass;
 	Level* m_level;
+	EnemyList* m_enemyList = nullptr;
 	int m_maxBombAmount;
 	int m_bombAmount;
 };

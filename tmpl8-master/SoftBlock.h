@@ -14,7 +14,7 @@ public:
 
 private:
 	// Functions
-	virtual void Initialise();
+	virtual void Initialize();
 	bool BeDestroyed(float _deltaTime);
 
 	// Variables

@@ -6,6 +6,8 @@
 #include "game.h"
 #include "SceneManager.h"
 
+GLFWwindow* Game::m_window = nullptr;
+
 void Game::Init()
 {
 	m_sceneManager = new SceneManager(screen);

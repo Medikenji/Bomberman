@@ -7,7 +7,6 @@
 
 #pragma comment( linker, "/subsystem:windows /ENTRY:mainCRTStartup" )
 
-using namespace Tmpl8;
 
 // Enable usage of dedicated GPUs in notebooks
 // Note: this does cause the linker to produce a .lib and .exp file;
@@ -26,7 +25,7 @@ extern "C"
 #endif
 
 GLFWwindow* window = 0;
-GLFWwindow* GetGLFWWindow() { return window; }
+//static GLFWwindow* GetGLFWWindow() { return window; }
 static bool hasFocus = true, running = true;
 static GLTexture* renderTarget = 0;
 static int scrwidth = 0, scrheight = 0;
@@ -138,7 +137,7 @@ int main()
 	// initialize application
 	InitRenderTarget(RNDRWIDTH, RNDRHEIGHT );
 	Surface* screen = new Surface(RNDRWIDTH, RNDRHEIGHT);
-	app = new Game();
+	app = new Game(window);
 	app->screen = screen;
 	app->Init();
 	// done, enter main loop

@@ -36,8 +36,9 @@ struct ALIGN( 8 ) int2
 struct ALIGN( 8 ) uint2
 {
 	uint2() = default;
-	uint2( const int a, const int b ) : x( a ), y( b ) {}
-	uint2( const uint a ) : x( a ), y( a ) {}
+	uint2( int a, int b ) : x( a ), y( b ) {}
+	uint2( uint a, uint b ) : x( a ), y( b ) {}
+	uint2(  uint a ) : x( a ), y( a ) {}
 	union { struct { uint x, y; }; uint cell[2]; };
 	uint& operator [] ( const int n ) { return cell[n]; }
 };
