@@ -8,8 +8,5 @@ public:
 
 	// Functions
 	void Update(float _deltaTime);
-
-private:
-	Surface* m_backGround = nullptr;
 };
 

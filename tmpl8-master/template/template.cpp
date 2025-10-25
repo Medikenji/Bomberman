@@ -4,6 +4,9 @@
 
 #include "precomp.h"
 #include "game.h"
+#ifdef _DEBUG
+#include <vld.h>
+#endif
 
 #pragma comment( linker, "/subsystem:windows /ENTRY:mainCRTStartup" )
 
@@ -52,6 +55,10 @@ void InitRenderTarget( int w, int h )
 	scrwidth = w, scrheight = h;
 	renderTarget = new GLTexture( scrwidth, scrheight, GLTexture::INTTARGET );
 }
+void DeInitRenderTarget()
+{
+	delete renderTarget;
+}
 void ReshapeWindowCallback( GLFWwindow*, int w, int h )
 {
 	glViewport( 0, 0, w, h );
@@ -94,9 +101,9 @@ int main()
 	glfwWindowHint( GLFW_STENCIL_BITS, GL_FALSE );
 	glfwWindowHint( GLFW_RESIZABLE, GL_FALSE /* easier :) */ );
 #ifdef FULLSCREEN
-	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Tmpl8-2024", glfwGetPrimaryMonitor(), 0 );
+	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Bomberman", glfwGetPrimaryMonitor(), 0 );
 #else
-	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Tmpl8-2024", 0, 0 );
+	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Bomberman", 0, 0 );
 #endif
 	if (!window) FatalError( "glfwCreateWindow failed." );
 	glfwMakeContextCurrent( window );
@@ -334,6 +341,7 @@ int main()
 	while (!glfwWindowShouldClose( window ))
 	{
 		deltaTime = timer.elapsed();
+		if (deltaTime > 0.1f) deltaTime = 0;
 		timer.reset();
 		app->Tick( deltaTime );
 		// send the rendering result to the screen using OpenGL
@@ -352,6 +360,10 @@ int main()
 	// close down
 	app->Shutdown();
 	Kernel::KillCL();
+	delete app;
+	delete screen;
+	delete shader;
+	DeInitRenderTarget();
 	glfwDestroyWindow( window );
 	glfwTerminate();
 	return 0;

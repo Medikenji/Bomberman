@@ -26,13 +26,7 @@
     <ClCompile Include="BomberMan.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="HardBlock.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
@@ -41,26 +35,42 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="SoftBlock.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
     <ClCompile Include="EntityContainer.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Ballom.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="DeathScreen.cpp" />
+    <ClCompile Include="Interactable.cpp">
+      <Filter>bomberman\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathScreen.cpp">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Ballom.cpp">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Dahl.cpp">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftBlock.cpp">
+      <Filter>bomberman\classes\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="HardBlock.cpp">
+      <Filter>bomberman\classes\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -94,19 +104,10 @@
     <ClInclude Include="BomberMan.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="HardBlock.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
     <ClInclude Include="Bomb.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SoftBlock.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="Collision.h">
@@ -115,20 +116,39 @@
     <ClInclude Include="EntityContainer.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="Ballom.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
     <ClInclude Include="AudioManager.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="DeathScreen.h" />
+    <ClInclude Include="Interactable.h">
+      <Filter>bomberman\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathScreen.h">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Ballom.h">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dahl.h">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>bomberman\classes\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftBlock.h">
+      <Filter>bomberman\classes\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="HardBlock.h">
+      <Filter>bomberman\classes\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>bomberman\classes\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -156,6 +176,15 @@
     </Filter>
     <Filter Include="bomberman\classes">
       <UniqueIdentifier>{22fa2910-e0c5-45ff-90dd-0cdd05c7d94d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\classes\Scenes">
+      <UniqueIdentifier>{73e09d30-ead2-4c2f-8675-4fbcf338caf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\classes\Enemies">
+      <UniqueIdentifier>{2fdd784a-53f4-4ce6-b924-682692d36283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\classes\Blocks">
+      <UniqueIdentifier>{510d885d-5915-48de-8b54-7330ae800b13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

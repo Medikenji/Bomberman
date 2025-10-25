@@ -12,7 +12,6 @@ public:
 
 private:
 	// Variables
-	Surface* m_backGround = nullptr;
 	Surface* m_arrow = nullptr;
 	int choice;
 	int previousChoice;

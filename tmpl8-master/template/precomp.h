@@ -400,6 +400,7 @@ private: uint64_t __crc64 = CLEARCRC64; uint __dirty = 0; public:
 class TheApp
 {
 public:
+	virtual ~TheApp() {};
 	virtual void Init() = 0;
 	virtual void Tick( float deltaTime ) = 0;
 	virtual void Shutdown() = 0;

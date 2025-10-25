@@ -3,6 +3,7 @@
 #include "Menu.h"
 #include "World.h"
 #include "DeathScreen.h"
+#include "AudioManager.h"
 
 SceneManager::SceneManager(Surface* _screen)
 {
@@ -13,11 +14,11 @@ SceneManager::SceneManager(Surface* _screen)
 
 SceneManager::~SceneManager()
 {
+	AudioManager::DestroyAudioManager();
 	for (int i = 0; i < MAX_SCENES; i++)
 	{
 		if (!m_scenes[i])
-			break;
-		delete m_scenes[i]->container;
+			continue;
 		delete m_scenes[i];
 	}
 }
@@ -36,20 +37,40 @@ void SceneManager::Run(float _deltaTime)
 }
 
 
-bool SceneManager::ChangeScene(UINT8 _scene)
+void SceneManager::ChangeScene(uint_fast8_t _scene)
 {
-	UINT8 currentScene = m_currentScene;
+	uint_fast8_t currentScene = m_currentScene;
 	if (!SwitchScene(_scene))
 	{
 		printf("Could not switch scene\n");
 		SwitchScene(currentScene);
-		return false;
 	}
-	return true;
 }
 
 
-bool SceneManager::SwitchScene(UINT8 _scene)
+void SceneManager::NextScene()
+{
+	uint_fast8_t currentScene = m_currentScene;
+	if (!SwitchScene(m_currentScene+1))
+	{
+		printf("Could not switch scene\n");
+		SwitchScene(currentScene);
+	}
+}
+
+
+void SceneManager::PreviousScene()
+{
+	uint_fast8_t currentScene = m_currentScene;
+	if (!SwitchScene(m_currentScene - 1))
+	{
+		printf("Could not switch scene\n");
+		SwitchScene(currentScene);
+	}
+}
+
+
+bool SceneManager::SwitchScene(uint_fast8_t _scene)
 {
 	Scene* newScene = nullptr;
 	switch (_scene)
@@ -62,7 +83,7 @@ bool SceneManager::SwitchScene(UINT8 _scene)
 		}
 		newScene = new Scene();
 		newScene->container = new EntityContainer();
-		newScene->splitscreen = false;
+		newScene->splitscreen = 0;
 		newScene->container->AddEntity(new Menu());
 		newScene->container->SetSurface(m_screen);
 		newScene->container->SetSceneManager(this);
@@ -77,8 +98,23 @@ bool SceneManager::SwitchScene(UINT8 _scene)
 		}
 		newScene = new Scene();
 		newScene->container = new EntityContainer();
-		newScene->splitscreen = true;
-		newScene->container->AddEntity(new World(new EnemyList(6, 0)));
+		newScene->splitscreen = 1;
+		newScene->container->AddEntity(SetCurrentWorld(new World(new EnemyList(6, 0))));
+		newScene->container->SetSurface(m_screen);
+		newScene->container->SetSceneManager(this);
+		newScene->clearColor = 0xbdbebd;
+		m_scenes[_scene] = newScene;
+		return 1;
+	case 2:
+		m_currentScene = _scene;
+		if (m_scenes[_scene] != nullptr)
+		{
+			return 1;
+		}
+		newScene = new Scene();
+		newScene->container = new EntityContainer();
+		newScene->splitscreen = 1;
+		newScene->container->AddEntity(SetCurrentWorld(new World(new EnemyList(3, 3))));
 		newScene->container->SetSurface(m_screen);
 		newScene->container->SetSceneManager(this);
 		newScene->clearColor = 0xbdbebd;

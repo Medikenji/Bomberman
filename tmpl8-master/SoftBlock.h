@@ -3,10 +3,18 @@
 
 class World;
 
+// Enums
+enum BlockContent {
+	EMPTY = 0,
+	EXIT = 1,
+	PW_SKATE = 2,
+	PW_FIRE = 3,
+};
+
 class SoftBlock : public Entity
 {
 public:
-	SoftBlock(float2 _blockPosition);
+	SoftBlock(float2 _blockPosition, BlockContent _content = EMPTY);
 	~SoftBlock();
 
 	// Functions
@@ -15,11 +23,11 @@ public:
 private:
 	// Functions
 	virtual void Initialize();
-	bool BeDestroyed(float _deltaTime);
+	void BeDestroyed(float _deltaTime);
 
 	// Variables
 	World* m_currentWorld = nullptr;
 	float m_animationTimer;
-	int m_currentFrame;
+	BlockContent m_content;
 };
 

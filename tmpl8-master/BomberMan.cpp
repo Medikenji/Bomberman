@@ -3,25 +3,26 @@
 #include "World.h"
 #include "Collision.h"
 #include "SceneManager.h"
+#include "AudioManager.h"
 
 BomberMan::BomberMan(int _bomberId) {
 	m_bomberId = _bomberId;
-	isLiving = true;
-	sprite = new Sprite(new Surface("assets/Bomberman.png"), 19);
+	drawnOnTopLayer = 1;
+	AddSprite(new Sprite(new Surface("assets/Bomberman.png"), 19));
 	m_animationState = 0;
+	m_bombRadius = 1;
 	m_animationTimer = 0;
-	m_animationSwitch = true;
-	position.x = 16;
-	position.y = 48;
-	// artificial width and height
-	scale.x = 16;
-	scale.y = 16;
+	m_animationSwitch = 1;
+	m_placedBombs = 0;
+	m_maxPlacedBombs = 1;
+	m_speed = START_SPEED;
+	scale = 15;
 }
 
 
-void BomberMan::Initialize()
+BomberMan::~BomberMan()
 {
-	m_currentWorld = static_cast<World*>(container->GetEntityById(0));
+	delete m_sprite;
 }
 
 
@@ -34,8 +35,30 @@ void BomberMan::Update(float _deltaTime)
 	position.y += v_y;
 	TileCollision();
 	SetAnimation(v_x, v_y);
-	container->SetCameraX(m_bomberId, (int)( - position.x + RNDRWIDTH / EntityContainer::GetSurfaceAmount() / 2 - scale.x / 2));
-	container->DrawToSurfaces(sprite, position);
+	m_container->SetCameraX(m_bomberId, (int)(-position.x + RNDRWIDTH / EntityContainer::GetSurfaceAmount() / 2 - scale.x / 2));
+	m_container->DrawToSurfaces(m_sprite, position, this);
+	if (m_isDead)
+		GoDie();
+}
+
+
+void BomberMan::DeletePlayers()
+{
+	for (int i = 0; i < m_playerAmount; i++)
+	{
+		m_players[i]->DeleteMask();
+		delete m_players[i];
+	}
+	delete[] m_players;
+}
+
+
+void BomberMan::SetCurrentWorld(World* _currentWorld)
+{
+	for (int i = 0; i < m_playerAmount; i++)
+	{
+		m_players[i]->m_currentWorld = _currentWorld;
+	}
 }
 
 
@@ -45,22 +68,54 @@ void BomberMan::SetPlayers(BomberMan** _players, int _playerAmount)
 		return;
 	}
 	m_playerAmount = _playerAmount;
-	m_players = _players; 
+	m_players = _players;
 }
 
-bool BomberMan::TileCollision()
+
+void BomberMan::BombAmount(bool _add_or_subtract)
+{
+	if (_add_or_subtract)
+		m_placedBombs++;
+	else
+		m_placedBombs--;
+}
+
+
+bool BomberMan::AddBombRadius()
+{
+	if (m_bombRadius >= MAX_BOMB_RADIUS)
+	{
+		return 0;
+	}
+	m_bombRadius++;
+	return 1;
+}
+
+
+bool BomberMan::AddSpeed()
+{
+	if (m_speed == START_SPEED)
+	{
+		m_speed *= 1.25f;
+		return 1;
+	}
+	return 0;
+}
+
+
+void BomberMan::TileCollision()
 {
 	float2 temp = { position.x + scale.x / 2, position.y + scale.y / 2 };
 	uint2 intGridPos = m_currentWorld->GetGridPos(temp);
-	UINT8 gridPos[2] = {(UINT8)intGridPos.x, (UINT8)intGridPos.y};
-	UINT8 l = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1 , gridPos[1] });
-	//UINT8 tl = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1, gridPos[1] - 1 });
-	UINT8 t = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] , gridPos[1] - 1 });
-	//UINT8 tr = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] - 1 });
-	UINT8 r = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] });
-	//UINT8 br = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] + 1 });
-	UINT8 b = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] , gridPos[1] + 1 });
-	//UINT8 bl = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1, gridPos[1] + 1 });
+	uint_fast8_t gridPos[2] = { (uint_fast8_t)intGridPos.x, (uint_fast8_t)intGridPos.y };
+	uint_fast8_t l = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1 , gridPos[1] });
+	//uint_fast8_t tl = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1, gridPos[1] - 1 });
+	uint_fast8_t t = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] , gridPos[1] - 1 });
+	//uint_fast8_t tr = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] - 1 });
+	uint_fast8_t r = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] });
+	//uint_fast8_t br = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] + 1, gridPos[1] + 1 });
+	uint_fast8_t b = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] , gridPos[1] + 1 });
+	//uint_fast8_t bl = m_currentWorld->GetCurrentBlockFromGrid({ gridPos[0] - 1, gridPos[1] + 1 });
 
 	float threshold;
 	float4 playerRectangle = { position.x + 1, position.y + 1, scale.x - 1, scale.y - 1 };
@@ -89,7 +144,7 @@ bool BomberMan::TileCollision()
 	// check right
 	if (r != World::Block::GRASS)
 	{
-		threshold = pixelPosition.x + World::BLOCKSIZE;
+		threshold = pixelPosition.x + World::BLOCKSIZE - 1;
 		if (position.x + scale.x > threshold)
 		{
 			position.x = threshold - scale.x;
@@ -99,22 +154,21 @@ bool BomberMan::TileCollision()
 	// check bottom
 	if (b != World::Block::GRASS)
 	{
-		threshold = pixelPosition.y + World::BLOCKSIZE;
+		threshold = pixelPosition.y + World::BLOCKSIZE - 1;
 		if (position.y + scale.y > threshold)
 		{
 			position.y = threshold - scale.y;
 		}
 	}
-	return true;
 }
 
 
-bool BomberMan::SetAnimation(float _velocityX, float _velocityY)
+void BomberMan::SetAnimation(float _velocityX, float _velocityY)
 {
 	int state = 0;
 
 	if (_velocityX == 0 && _velocityY == 0)
-		return true;
+		return;
 
 	if (_velocityX > 0)
 		state = 0;
@@ -128,73 +182,85 @@ bool BomberMan::SetAnimation(float _velocityX, float _velocityY)
 	switch (state)
 	{
 	case 0:
-		this->Animate(6);
+		Animate(6);
 		break;
 	case 1:
-		this->Animate(0);
+		Animate(0);
 		break;
 	case 2:
-		this->Animate(9);
+		Animate(9);
 		break;
 	case 3:
-		this->Animate(3);
+		Animate(3);
 		break;
 	}
-
-	return true;
 };
 
 
-bool BomberMan::Animate(int _startFrame)
+void BomberMan::Animate(uint_fast8_t _startFrame)
 {
-	this->sprite->SetFrame(_startFrame + m_animationState);
+	m_currentFrame = _startFrame + m_animationState;
 	if (m_animationTimer > 0)
 	{
-		return true;
+		return;
 	}
 
-	this->m_animationTimer = 0.05f;
+	m_animationTimer = 0.05f;
 
-	if (this->m_animationSwitch)
+	if (m_animationSwitch)
 	{
-		this->m_animationState++;
+		m_animationState++;
 	}
 	else
 	{
-		this->m_animationState--;
+		m_animationState--;
 	}
 
-	if (this->m_animationState < 1 || this->m_animationState > 1)
+	if (m_animationState < 1 || m_animationState > 1)
 	{
-		this->m_animationSwitch = !this->m_animationSwitch;
+		m_animationSwitch = !m_animationSwitch;
 	}
 
-	return true;
 }
 
 
-bool BomberMan::Input(float deltaTime, float* _velocityX, float* _velocityY)
+void BomberMan::Input(float deltaTime, float* _velocityX, float* _velocityY)
 {
 	if (m_bomberId == 0)
 	{
-		if (GetAsyncKeyState(GLFW_KEY_Z)) m_currentWorld->PlaceBomb(position+(scale.x/2));
-		if (GetAsyncKeyState(VK_UP)) *_velocityY += -45 * deltaTime;
-		if (GetAsyncKeyState(VK_DOWN)) *_velocityY += 45 * deltaTime;
-		if (GetAsyncKeyState(VK_LEFT)) *_velocityX += -45 * deltaTime;
-		if (GetAsyncKeyState(VK_RIGHT)) *_velocityX += 45 * deltaTime;
+		if (m_placedBombs < m_maxPlacedBombs)
+			if (GetAsyncKeyState(GLFW_KEY_E)) m_currentWorld->PlaceBomb(position + (scale.x / 2), this);
+		if (GetAsyncKeyState(VK_UP)) *_velocityY += -m_speed * deltaTime;
+		if (GetAsyncKeyState(VK_DOWN)) *_velocityY += m_speed * deltaTime;
+		if (GetAsyncKeyState(VK_LEFT)) *_velocityX += -m_speed * deltaTime;
+		if (GetAsyncKeyState(VK_RIGHT)) *_velocityX += m_speed * deltaTime;
 	}
 	if (m_bomberId == 1)
 	{
-		if (GetAsyncKeyState(GLFW_KEY_W)) *_velocityY += -45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_S)) *_velocityY += 45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_A)) *_velocityX += -45 * deltaTime;
-		if (GetAsyncKeyState(GLFW_KEY_D)) *_velocityX += 45 * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_RIGHT_SHIFT)) m_currentWorld->PlaceBomb(position + (scale.x / 2), this);
+		if (GetAsyncKeyState(GLFW_KEY_W)) *_velocityY += -m_speed * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_S)) *_velocityY += m_speed * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_A)) *_velocityX += -m_speed * deltaTime;
+		if (GetAsyncKeyState(GLFW_KEY_D)) *_velocityX += m_speed * deltaTime;
 	}
-	return true;
 }
 
-void BomberMan::Die()
+
+void BomberMan::GoDie()
 {
-	container->GetSceneManager()->ChangeScene(15);
-	container->DeleteEntity(this);
+	m_speed = 0;
+	AudioManager::GetAudioManager()->StopAudio(Audio::MainTheme, 2000);
+	if (m_currentFrame < 11)
+	{
+		m_currentFrame = 11;
+	}
+	if (m_animationTimer > 0)
+	{
+		return;
+	}
+	m_animationTimer = 0.25f;
+	if (++m_currentFrame == 19) {
+		m_container->GetSceneManager()->ChangeScene(15);
+		return;
+	}
 }

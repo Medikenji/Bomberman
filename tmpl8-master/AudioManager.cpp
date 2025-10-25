@@ -21,7 +21,7 @@ void AudioManager::DestroyAudioManager()
 }
 
 
-void AudioManager::PlayAudio(UINT8 _audio)
+void AudioManager::PlayAudio(uint_fast8_t _audio)
 {
 	switch (_audio)
 	{
@@ -47,7 +47,7 @@ void AudioManager::PlayAudio(UINT8 _audio)
 }
 
 
-void AudioManager::StopAudio(UINT8 _audio)
+void AudioManager::StopAudio(uint_fast8_t _audio)
 {
 	switch (_audio)
 	{
@@ -65,6 +65,32 @@ void AudioManager::StopAudio(UINT8 _audio)
 		break;
 	case Audio::DeathSound:
 		ma_sound_start(&m_deathSound);
+		break;
+	default:
+		FatalError("Audio does not exist");
+		break;
+	}
+}
+
+
+void AudioManager::StopAudio(uint_fast8_t _audio, int _fadeInMs)
+{
+	switch (_audio)
+	{
+	case Audio::MenuSong:
+		ma_sound_stop_with_fade_in_milliseconds(&m_menuSong, _fadeInMs);
+		break;
+	case Audio::MenuSelect:
+		ma_sound_stop_with_fade_in_milliseconds(&m_menuSelect, _fadeInMs);
+		break;
+	case Audio::MainTheme:
+		ma_sound_stop_with_fade_in_milliseconds(&m_mainTheme, _fadeInMs);
+		break;
+	case Audio::BombExplode:
+		ma_sound_stop_with_fade_in_milliseconds(&m_bombExplosion, _fadeInMs);
+		break;
+	case Audio::DeathSound:
+		ma_sound_stop_with_fade_in_milliseconds(&m_deathSound, _fadeInMs);
 		break;
 	default:
 		FatalError("Audio does not exist");
@@ -125,6 +151,7 @@ AudioManager::~AudioManager()
 	ma_sound_uninit(&m_bombExplosion);
 	ma_sound_uninit(&m_deathSound);
 }
+
 
 void AudioManager::InitFromFile(const char* _filePath, ma_sound& _sound)
 {

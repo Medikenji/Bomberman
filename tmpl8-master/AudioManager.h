@@ -15,8 +15,9 @@ class AudioManager
 public:
 	static AudioManager* GetAudioManager();
 	static void DestroyAudioManager();
-	static void PlayAudio(UINT8 _audio);
-	static void StopAudio(UINT8 _audio);
+	static void PlayAudio(uint_fast8_t _audio);
+	static void StopAudio(uint_fast8_t _audio);
+	static void StopAudio(uint_fast8_t _audio, int _fadeInMs);
 	static void StopAll();
 
 private:

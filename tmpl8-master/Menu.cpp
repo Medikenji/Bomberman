@@ -7,7 +7,7 @@
 
 Menu::Menu()
 {
-	m_backGround = new Surface("assets/MenuScreen.png");
+	m_surface = new Surface("assets/MenuScreen.png");
 	m_arrow = new Surface("assets/Arrow.png");
 	choice = 0;
 	previousChoice = choice;
@@ -17,14 +17,14 @@ Menu::Menu()
 
 Menu::~Menu()
 {
-	delete m_backGround;
+	delete m_surface;
 	delete m_arrow;
 }
 
 
 void Menu::Update(float)
 {
-	m_backGround->CopyTo(container->GetSurface(), static_cast<int>(position.x), static_cast<int>(position.y));
+	m_surface->CopyTo(m_container->GetSurface(), static_cast<int>(position.x), static_cast<int>(position.y));
 
 	if (GetAsyncKeyState(GLFW_KEY_1) || GetAsyncKeyState(GLFW_KEY_KP_0))
 	{
@@ -55,13 +55,13 @@ void Menu::Update(float)
 	{
 		AudioManager::GetAudioManager()->StopAudio(Audio::MenuSong);
 		EntityContainer::SetSurfaceAmount(1);
-		BomberMan** players = new BomberMan*[1];;
+		BomberMan** players = new BomberMan*[1];
 		for (int i = 0; i < 1; i++)	
 		{
 			players[i] = new BomberMan(i);
 		}
 		BomberMan::SetPlayers(players, 1);
-		container->GetSceneManager()->ChangeScene(1);
+		m_container->GetSceneManager()->ChangeScene(1);
 	}
 
 	if (GetAsyncKeyState(GLFW_KEY_SPACE) && choice == 1)
@@ -73,14 +73,14 @@ void Menu::Update(float)
 	{
 		AudioManager::GetAudioManager()->StopAudio(Audio::MenuSong);
 		EntityContainer::SetSurfaceAmount(2);
-		BomberMan** players = new BomberMan*[2];;
+		BomberMan** players = new BomberMan*[2];
 		for (int i = 0; i < 2; i++)
 		{
 			players[i] = new BomberMan(i);
 		}
 		BomberMan::SetPlayers(players, 2);
-		container->GetSceneManager()->ChangeScene(1);
+		m_container->GetSceneManager()->ChangeScene(1);
 	}
 	previousChoice = choice;
-	m_arrow->CopyTo(container->GetSurface(), static_cast<int>(position.x + ARROW_POSITIONS[choice].x), static_cast<int>(position.y + ARROW_POSITIONS[choice].y));
+	m_arrow->CopyTo(m_container->GetSurface(), static_cast<int>(position.x + ARROW_POSITIONS[choice].x), static_cast<int>(position.y + ARROW_POSITIONS[choice].y));
 }

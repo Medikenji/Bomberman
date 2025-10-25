@@ -11,8 +11,8 @@ public:
 
 protected:
 	void PlayerCollision();
+	void GoDie();
 
 private:
-	void Die();
 };
 

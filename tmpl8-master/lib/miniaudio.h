@@ -62411,7 +62411,7 @@ static ma_result ma_default_vfs_info(ma_vfs* pVFS, ma_vfs_file file, ma_file_inf
 
     if (result == MA_NOT_IMPLEMENTED) {
         /* Not implemented. Fall back to seek/tell/seek. */
-        ma_result result;
+        //ma_result result;
         ma_int64 cursor;
         ma_int64 sizeInBytes;
 
@@ -83545,8 +83545,11 @@ MA_PRIVATE ma_bool32 ma_dr_wav__on_seek_memory_write(void* pUserData, int offset
 {
     ma_dr_wav* pWav = (ma_dr_wav*)pUserData;
     ma_int64 newCursor;
+
     MA_DR_WAV_ASSERT(pWav != NULL);
+
     newCursor = pWav->memoryStreamWrite.currentWritePos;
+
     if (origin == MA_DR_WAV_SEEK_SET) {
         newCursor = 0;
     }
@@ -83558,15 +83561,19 @@ MA_PRIVATE ma_bool32 ma_dr_wav__on_seek_memory_write(void* pUserData, int offset
     }
     else {
         MA_DR_WAV_ASSERT(!"Invalid seek origin");
-        return MA_INVALID_ARGS;
+        return MA_FALSE;
     }
+
     newCursor += offset;
+
     if (newCursor < 0) {
         return MA_FALSE;
     }
+
     if ((size_t)newCursor > pWav->memoryStreamWrite.dataSize) {
         return MA_FALSE;
     }
+
     pWav->memoryStreamWrite.currentWritePos = (size_t)newCursor;
     return MA_TRUE;
 }

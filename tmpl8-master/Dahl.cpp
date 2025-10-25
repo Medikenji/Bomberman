@@ -1,30 +1,29 @@
 #include "precomp.h"
-#include "Ballom.h"
+#include "Dahl.h"
 #include "World.h"
-#include "SceneManager.h"
 
-Ballom::Ballom()
+Dahl::Dahl()
 {
-	m_speed = 25.0f;
-	m_direction = rand() % 2;
-	m_directionTimer = (((float)rand() / (float)RAND_MAX) * 9 + 1);
-	AddSprite(new Sprite(new Surface("assets/Ballom.png"), 11));
+	m_speed = 35.0f;
+	m_direction = Direction::X;
+	m_directionTimer = (((float)rand() / (float)RAND_MAX) * 10 + 1);
+	AddSprite(new Sprite(new Surface("assets/Dahl.png"), 11));
 }
 
 
-Ballom::~Ballom()
+Dahl::~Dahl()
 {
 	delete m_sprite;
 }
 
 
-void Ballom::Initialize()
+void Dahl::Initialize()
 {
-	m_currentWorld = SceneManager::GetCurrentWorld();
+	m_currentWorld = static_cast<World*>(m_container->GetEntityById(0));
 }
 
 
-void Ballom::Update(float _deltaTime)
+void Dahl::Update(float _deltaTime)
 {
 	m_directionTimer -= _deltaTime;
 	AttemptSwitch();
@@ -36,24 +35,25 @@ void Ballom::Update(float _deltaTime)
 }
 
 
-void Ballom::SwitchSide()
+void Dahl::SwitchSide()
 {
 	uint2 tilePosition = m_currentWorld->GetGridPos(position + scale / 2);
 	float2 newPosisition = m_currentWorld->GetPixelPosFromGrid(tilePosition);
 	if (m_direction == Direction::X)
 	{
 		position.x = newPosisition.x;
+		m_directionTimer = (((float)rand() / (float)RAND_MAX) * 2 + 1);
 	}
 	if (m_direction == Direction::Y)
 	{
 		position.y = newPosisition.y;
+		m_directionTimer = (((float)rand() / (float)RAND_MAX) * 10 + 1);
 	}
-	m_directionTimer = (((float)rand() / (float)RAND_MAX) * 9 + 1);
 	m_direction = !m_direction;
 }
 
 
-void Ballom::AttemptSwitch()
+void Dahl::AttemptSwitch()
 {
 	if (m_directionTimer < 0)
 	{
@@ -80,7 +80,7 @@ void Ballom::AttemptSwitch()
 }
 
 
-void Ballom::Move(float _deltaTime)
+void Dahl::Move(float _deltaTime)
 {
 	bool sideA = 0;
 	bool sideB = 0;

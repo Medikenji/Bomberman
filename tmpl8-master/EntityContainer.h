@@ -15,8 +15,12 @@ public:
 	// Structs
 	struct SplitSurface
 	{
+		~SplitSurface()
+		{
+			delete surface;
+		}
 		// Variables
-		Surface* surface = new Surface();
+		Surface* surface = nullptr;
 		float offsetX = 0, offsetY = 0;
 	};
 
@@ -35,7 +39,7 @@ public:
 	void DrawSplitScreens()const;
 	void ClearSurfaces(int _clearColor);
 	void CopyToSurfaces(Surface* _surface, float2 _position);
-	void DrawToSurfaces(Sprite* _sprite, float2 _position);
+	void DrawToSurfaces(Sprite* _sprite, float2 _position, Entity* _entity);
 	void PlotToSurfaces(int _pixelColor, float2 _position);
 	void BoxToSurfaces(int _pixelColor, float4 _rectangle);
 
@@ -46,7 +50,7 @@ private:
 	SplitSurface* surfaces[2]{ 0 };
 	Entity* m_entities[MAX_ENTITIES]{ 0 };
 	inline static int m_surfaceAmount = -1;
-	UINT16 m_nextEntityId;
-	UINT16 m_entityAmount;
+	uint_least16_t m_nextEntityId;
+	uint_least16_t m_entityAmount;
 };
 

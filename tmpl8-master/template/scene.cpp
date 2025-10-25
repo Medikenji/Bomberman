@@ -97,7 +97,7 @@ void Skin::ConvertFromGLTFSkin( const tinygltf::Skin& gltfSkin, const tinygltf::
 		memcpy( inverseBindMatrices.data(), &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof( mat4 ) );
 		jointMat.resize( accessor.count );
 		// convert gltf's column-major to row-major
-		for (int k = 0; k < accessor.count; k++)
+		for (size_t k = 0; k < accessor.count; k++)
 		{
 			mat4 M = inverseBindMatrices[k];
 			for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) inverseBindMatrices[k].cell[j * 4 + i] = M.cell[i * 4 + j];
@@ -220,7 +220,7 @@ void Mesh::LoadGeometryFromOBJ( const string& fileName, const char* directory, c
 	int toReserve = 0;
 	for (auto& shape : shapes) toReserve += (int)shape.mesh.indices.size();
 	vertices.reserve( toReserve );
-	for (auto& shape : shapes) for (int f = 0; f < shape.mesh.indices.size(); f += 3)
+	for (auto& shape : shapes) for (size_t f = 0; f < shape.mesh.indices.size(); f += 3)
 	{
 		const uint idx0 = shape.mesh.indices[f + 0].vertex_index;
 		const uint idx1 = shape.mesh.indices[f + 1].vertex_index;

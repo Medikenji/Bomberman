@@ -3,11 +3,11 @@
 
 class World;
 
-class Ballom : public Enemy
+class Dahl : public Enemy
 {
 public:
-	Ballom();
-	~Ballom();
+	Dahl();
+	~Dahl();
 
 	// Functions
 	void Update(float _deltaTime);

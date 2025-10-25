@@ -2,11 +2,12 @@
 #include "Entity.h"
 
 class World;
+class BomberMan;
 
 class Bomb : public Entity
 {
 public:
-	Bomb(float2 _bombPosition);
+	Bomb(float2 _bombPosition, BomberMan* _bomberMan);
 	~Bomb();
 
 	// Functions
@@ -15,12 +16,13 @@ public:
 private:
 	// Funtions
 	virtual void Initialize();
-	bool Animation(float _deltaTime);
-	bool Explode();
+	void Animation(float _deltaTime);
+	void Explode();
 
 	// Variables
 	World* m_currentWorld = nullptr;
-	int m_animationFrame;
+	BomberMan* m_owner;
+	uint_fast8_t m_animationFrame;
 	float m_explosionTimer;
 	float m_animationTimer;
 };
@@ -28,11 +30,11 @@ private:
 class BombExplosion : public Entity
 {
 public:
-	BombExplosion(float2 _explosionPosition, int _explosionSide, Entity** _killableEntities, int _killableEntitiesAmount);
+	BombExplosion(float2 _explosionPosition, uint_fast8_t _explosionSide, Entity** _killableEntities, int _killableEntitiesAmount);
 	~BombExplosion();
 
 	// Enums
-	enum {
+	enum ExplosionSide{
 		MIDDLE = 0,
 		LEFT_END = 1,
 		LEFT = 2,
@@ -52,12 +54,12 @@ private:
 	bool ExplodeAnimation(float _deltaTime);
 
 	// Variables
-	static const UINT8 m_spriteAmount = 4;
-	Entity* m_killableEntities[32] = { nullptr };
-	float4 m_hitbox;
 	int m_killableEntitiesAmount;
-	int m_explosionType;
 	int m_animationFrame;
-	float m_animationTimer;
+	float4 m_hitbox;
+	uint_fast8_t m_explosionType;
+	static const uint_fast8_t m_spriteAmount = 4;
+	Entity* m_killableEntities[32] = { nullptr };
 	Sprite* m_sprites[m_spriteAmount];
+	float m_animationTimer;
 };

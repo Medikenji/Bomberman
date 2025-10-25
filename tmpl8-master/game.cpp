@@ -5,6 +5,8 @@
 #include "precomp.h"
 #include "game.h"
 #include "SceneManager.h"
+#include "BomberMan.h"
+
 
 GLFWwindow* Game::m_window = nullptr;
 
@@ -21,4 +23,5 @@ void Game::Tick(float _deltaTime)
 void Game::Shutdown()
 {
 	delete m_sceneManager;
+	BomberMan::DeletePlayers();
 }

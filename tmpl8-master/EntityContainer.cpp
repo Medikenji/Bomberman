@@ -2,7 +2,7 @@
 #include "EntityContainer.h"
 #include "Entity.h"
 #include "World.h"
-
+#include "BomberMan.h"
 
 EntityContainer::EntityContainer()
 {
@@ -26,7 +26,11 @@ EntityContainer::~EntityContainer()
 	}
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		delete m_entities[i];
+		if (!dynamic_cast<BomberMan*>(m_entities[i]))
+		{
+			m_entities[i]->DeleteMask();
+			delete m_entities[i];
+		}
 	}
 }
 
@@ -44,12 +48,12 @@ void EntityContainer::UpdateEntities(float _deltaTime)
 {
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (!m_entities[i]->isLiving)
+		if (!m_entities[i]->drawnOnTopLayer)
 			m_entities[i]->Update(_deltaTime);
 	}
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (m_entities[i]->isLiving)
+		if (m_entities[i]->drawnOnTopLayer)
 			m_entities[i]->Update(_deltaTime);
 	}
 }
@@ -73,7 +77,9 @@ void EntityContainer::DeleteEntity(Entity* _entityToDelete)
 		if (m_entities[i]->GetID() == _entityToDelete->GetID())
 		{
 			childIndex = i;
+			m_entities[i]->DeleteMask();
 			delete m_entities[i];
+			m_entities[i] = nullptr;
 			break;
 		}
 	}
@@ -147,10 +153,11 @@ void EntityContainer::CopyToSurfaces(Surface* _surface, float2 _position)
 }
 
 
-void EntityContainer::DrawToSurfaces(Sprite* _sprite, float2 _position)
+void EntityContainer::DrawToSurfaces(Sprite* _sprite, float2 _position, Entity* _entity)
 {
 	for (int i = 0; i < m_surfaceAmount; i++)
 	{
+		_sprite->SetFrame(_entity->GetCurrentFrame());
 		_sprite->Draw(surfaces[i]->surface, (int)(_position.x + surfaces[i]->offsetX), (int)(_position.y + surfaces[i]->offsetY));
 	}
 }
