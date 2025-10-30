@@ -30,9 +30,6 @@ void SoftBlock::Initialize()
 void SoftBlock::Update(float _deltaTime)
 {
 	m_container->DrawToSurfaces(m_sprite, position, this);
-	if (m_content != BlockContent::EMPTY)
-		m_container->BoxToSurfaces(0x00ff00, GetRectangle());
-
 	if (m_currentWorld->GetCurrentBlock(position) != World::Block::SOFTWALL)
 		BeDestroyed(_deltaTime);
 

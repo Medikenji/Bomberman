@@ -7,7 +7,8 @@ enum Audio {
 	MenuSelect = 1,
 	MainTheme = 2,
 	BombExplode = 3,
-	DeathSound = 4
+	DeathSound = 4,
+	VictoryTheme = 5,
 };
 
 class AudioManager
@@ -15,10 +16,9 @@ class AudioManager
 public:
 	static AudioManager* GetAudioManager();
 	static void DestroyAudioManager();
-	static void PlayAudio(uint_fast8_t _audio);
-	static void StopAudio(uint_fast8_t _audio);
-	static void StopAudio(uint_fast8_t _audio, int _fadeInMs);
-	static void StopAll();
+	void PlayAudio(uint_fast8_t _audio);
+	void StopAudio(uint_fast8_t _audio);
+	void StopAll();
 
 private:
 	AudioManager();
@@ -34,5 +34,6 @@ private:
 	inline static ma_sound m_mainTheme;
 	inline static ma_sound m_bombExplosion;
 	inline static ma_sound m_deathSound;
+	inline static ma_sound m_victoryTheme;
 };
 

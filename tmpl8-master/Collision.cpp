@@ -44,45 +44,40 @@ bool Collision::PointToRec(float2 _point, float4 _rec)
 // Source: https://www.youtube.com/watch?v=9pnEBa4cy5w, pretty much copy pasted it, the extracting and loading in the mask is my own work
 bool Collision::PixelPerfectCollision(Entity* _entity1, Entity* _entity2)
 {
-	Entity* entityA = _entity1;
-	Entity* entityB = _entity2;
-	bool* maskA = nullptr;
-	bool* maskB = nullptr;
-	int aLeft, aRight, aBottom, aTop;
-	int bLeft, bRight, bBottom, bTop;
+	int aleft, aright, abottom, atop;
+	int bleft, bright, bbottom, btop;
 	int left, right, bottom, top;
 	int columns, rows;
 
-	aLeft = (int)entityA->position.x; aRight = (int)entityA->position.x + entityA->GetMaskProportions().x - 1;
-	aTop = (int)entityA->position.y; aBottom = (int)entityA->position.y + entityA->GetMaskProportions().y - 1;
+	aleft = (int)_entity1->position.x; aright = aleft + _entity1->GetMaskProportions().x - 1;
+	abottom = (int)_entity1->position.y; atop = abottom + _entity1->GetMaskProportions().y - 1;
 
-	bLeft = (int)entityB->position.x; bRight = (int)entityB->position.x + entityB->GetMaskProportions().x - 1;
-	bTop = (int)entityB->position.y; bBottom = (int)entityB->position.y + entityB->GetMaskProportions().y - 1;
+	bleft = (int)_entity2->position.x; bright = bleft + _entity2->GetMaskProportions().x - 1;
+	bbottom = (int)_entity2->position.y; btop = bbottom + _entity2->GetMaskProportions().y - 1;
 
-	if (aLeft > bRight || aRight < bLeft || aBottom < bTop || aTop > bBottom)
+	if (aleft > bright || aright < bleft || abottom > btop || atop < bbottom)
 		return false;
 
-	maskA = entityA->GetMask();
-	maskB = entityB->GetMask();
-
-	left = std::max(aLeft, bLeft);
-	right = std::min(aRight, bRight);
-	top = std::max(aTop, bTop);
-	bottom = std::min(aBottom, bBottom);
+	left = std::max(aleft, bleft);
+	right = std::min(aright, bright);
+	bottom = std::max(abottom, bbottom);
+	top = std::min(atop, btop);
 	columns = right - left + 1;
-	rows = bottom - top + 1;
+	rows = top - bottom + 1;
 
-	aLeft = left - aLeft;
-	aBottom = bottom - aBottom;
+	aleft = left - aleft;
+	abottom = bottom - abottom;
 
-	bLeft = left - bLeft;
-	bBottom = bottom - bBottom;
+	bleft = left - bleft;
+	bbottom = bottom - bbottom;
 
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < columns; j++)
-		{
-			if (maskA[(aLeft + j) + (aBottom + i) * entityA->GetMaskProportions().x] && maskB[(bLeft + j) + (bBottom + i) * entityB->GetMaskProportions().x])
+	bool* maskA = _entity1->GetMask();
+	bool* maskB = _entity2->GetMask();
+
+	for (int y = 0; y < rows; ++y) {
+		for (int x = 0; x < columns; ++x) {
+			if (maskA[(aleft + x) + (abottom + y) * _entity1->GetMaskProportions().x] &&
+				maskB[(bleft + x) + (bbottom + y) * _entity2->GetMaskProportions().x])
 			{
 				delete[] maskA;
 				delete[] maskB;

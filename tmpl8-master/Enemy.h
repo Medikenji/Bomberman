@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 
-class BomberMan;
+class World;
 
 class Enemy : public Entity
 {
@@ -12,7 +12,7 @@ public:
 protected:
 	void PlayerCollision();
 	void GoDie();
-
-private:
+	World* m_currentWorld = nullptr;
+	uint_fast16_t m_score;
 };
 

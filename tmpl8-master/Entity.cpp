@@ -38,7 +38,7 @@ bool* Entity::GetMask()
 {
 	int currentFrame = m_currentFrame;
 	const int maskSize = m_maskWidth * m_maskHeight;
-	bool* mask = new bool[maskSize<<1];
+	bool* mask = new bool[maskSize];
 
 	for (int i = 0; i < m_maskHeight; i++) {
 		for (int j = 0; j < m_maskWidth; j++) {

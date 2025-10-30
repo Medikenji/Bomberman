@@ -4,9 +4,12 @@
 #include "World.h"
 #include "DeathScreen.h"
 #include "AudioManager.h"
+#include "BomberMan.h"
+#include "EndScreen.h"
 
 SceneManager::SceneManager(Surface* _screen)
 {
+	m_reset = 0;
 	m_screen = _screen;
 	SwitchScene(0);
 }
@@ -20,20 +23,25 @@ SceneManager::~SceneManager()
 		if (!m_scenes[i])
 			continue;
 		delete m_scenes[i];
+		m_scenes[i] = nullptr;
 	}
 }
 
 
 void SceneManager::Run(float _deltaTime)
 {
-	EntityContainer* container = m_scenes[m_currentScene]->container;
-	container->ClearSurfaces(m_scenes[m_currentScene]->clearColor);
+	int currentScene = m_currentScene;
+	EntityContainer* container = m_scenes[currentScene]->container;
+	container = m_scenes[currentScene]->container;;
+	container->ClearSurfaces(m_scenes[currentScene]->clearColor);
 	container->UpdateEntities(_deltaTime);
-	container = m_scenes[m_currentScene]->container;
-	if (m_scenes[m_currentScene]->splitscreen)
+	if (m_scenes[currentScene]->splitscreen)
 	{
 		container->DrawSplitScreens();
 	}
+	currentScene = m_currentScene;
+	if (m_reset)
+		CleanUp();
 }
 
 
@@ -44,6 +52,7 @@ void SceneManager::ChangeScene(uint_fast8_t _scene)
 	{
 		printf("Could not switch scene\n");
 		SwitchScene(currentScene);
+		return;
 	}
 }
 
@@ -55,6 +64,7 @@ void SceneManager::NextScene()
 	{
 		printf("Could not switch scene\n");
 		SwitchScene(currentScene);
+		return;
 	}
 }
 
@@ -66,13 +76,37 @@ void SceneManager::PreviousScene()
 	{
 		printf("Could not switch scene\n");
 		SwitchScene(currentScene);
+		return;
 	}
+}
+
+Scene::~Scene()
+{
+	delete container;
+	container = nullptr;
+}
+
+void SceneManager::CleanUp()
+{
+	m_reset = 0;
+	EntityContainer::SetSurfaceAmount(-1);
+	for (int i = 0; i < MAX_SCENES; i++)
+	{
+		if (m_scenes[i])
+		{
+			delete m_scenes[i];
+			m_scenes[i] = nullptr;
+		}
+	}
+	BomberMan::DeletePlayers();
+	SwitchScene(0);
 }
 
 
 bool SceneManager::SwitchScene(uint_fast8_t _scene)
 {
 	Scene* newScene = nullptr;
+	AudioManager::GetAudioManager()->StopAll();
 	switch (_scene)
 	{
 	case 0:
@@ -118,6 +152,21 @@ bool SceneManager::SwitchScene(uint_fast8_t _scene)
 		newScene->container->SetSurface(m_screen);
 		newScene->container->SetSceneManager(this);
 		newScene->clearColor = 0xbdbebd;
+		m_scenes[_scene] = newScene;
+		return 1;
+	case 3:
+		m_currentScene = _scene;
+		if (m_scenes[_scene] != nullptr)
+		{
+			return 1;
+		}
+		newScene = new Scene();
+		newScene->container = new EntityContainer();
+		newScene->splitscreen = 0;
+		newScene->container->AddEntity(new EndScreen());
+		newScene->container->SetSurface(m_screen);
+		newScene->container->SetSceneManager(this);
+		newScene->clearColor = 0x000000;
 		m_scenes[_scene] = newScene;
 		return 1;
 	case 15:

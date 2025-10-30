@@ -44,12 +44,17 @@ void BomberMan::Update(float _deltaTime)
 
 void BomberMan::DeletePlayers()
 {
-	for (int i = 0; i < m_playerAmount; i++)
-	{
-		m_players[i]->DeleteMask();
-		delete m_players[i];
-	}
-	delete[] m_players;
+    if (m_players)
+    {
+        for (int i = 0; i < m_playerAmount; i++)
+        {
+            m_players[i]->DeleteMask();
+            delete m_players[i];
+            m_players[i] = nullptr;
+        }
+        delete[] m_players;
+        m_players = nullptr;
+    }
 }
 
 
@@ -64,9 +69,6 @@ void BomberMan::SetCurrentWorld(World* _currentWorld)
 
 void BomberMan::SetPlayers(BomberMan** _players, int _playerAmount)
 {
-	if (m_players != nullptr) {
-		return;
-	}
 	m_playerAmount = _playerAmount;
 	m_players = _players;
 }
@@ -249,7 +251,6 @@ void BomberMan::Input(float deltaTime, float* _velocityX, float* _velocityY)
 void BomberMan::GoDie()
 {
 	m_speed = 0;
-	AudioManager::GetAudioManager()->StopAudio(Audio::MainTheme, 2000);
 	if (m_currentFrame < 11)
 	{
 		m_currentFrame = 11;

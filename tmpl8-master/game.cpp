@@ -6,7 +6,7 @@
 #include "game.h"
 #include "SceneManager.h"
 #include "BomberMan.h"
-
+#include "FontRenderer.h"
 
 GLFWwindow* Game::m_window = nullptr;
 
@@ -23,5 +23,6 @@ void Game::Tick(float _deltaTime)
 void Game::Shutdown()
 {
 	delete m_sceneManager;
+	FontRenderer::UnInitFontRenderer();
 	BomberMan::DeletePlayers();
 }

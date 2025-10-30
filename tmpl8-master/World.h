@@ -49,6 +49,7 @@ public:
 	};
 
 	// Functions
+	void AddScore(uint_fast16_t _score) { m_score += _score; };
 	void PlaceBomb(float2 _position, BomberMan* _bomberMan);
 	void ExplodeBomb(uint2 _gridPosition, uint_fast8_t _explosionSize);
 	bool AllowNextLevel();
@@ -72,8 +73,10 @@ private:
 
 	// Variables
 	static const int MARGIN = 32;
+	inline static uint_fast16_t score = 0;
 	Entity* m_killableEntities[32] = { nullptr };
 	int m_killableEntitiesAmount;
+	uint_fast16_t m_score;
 	Level* m_level;
 	EnemyList* m_enemyList = nullptr;
 

@@ -140,9 +140,11 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Dahl.cpp" />
     <ClCompile Include="DeathScreen.cpp" />
+    <ClCompile Include="EndScreen.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityContainer.cpp" />
+    <ClCompile Include="FontRenderer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="HardBlock.cpp" />
     <ClCompile Include="Interactable.cpp" />
@@ -175,9 +177,11 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Dahl.h" />
     <ClInclude Include="DeathScreen.h" />
+    <ClInclude Include="EndScreen.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityContainer.h" />
+    <ClInclude Include="FontRenderer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="HardBlock.h" />
     <ClInclude Include="Interactable.h" />
@@ -195,6 +199,7 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="cl\kernels.cl" />
     <None Include="README.md" />
     <None Include="template\LICENSE" />

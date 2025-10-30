@@ -11,7 +11,7 @@ Bomb::Bomb(float2 _bombPosition, BomberMan* _bomberMan)
 	m_owner = _bomberMan;
 	m_owner->BombAmount(1);
 	m_animationFrame = 0;
-	m_explosionTimer = 0.0f;
+	m_explosionTimer = 3.0f;
 	m_animationTimer = 0.0f;
 	AddSprite(new Sprite(new Surface("assets/Bomb.png"), 3));
 	m_sprite->SetFrame(m_animationFrame);
@@ -60,7 +60,7 @@ void Bomb::Animation(float _deltaTime)
 
 void Bomb::Explode()
 {
-	AudioManager::PlayAudio(Audio::BombExplode);
+	AudioManager::GetAudioManager()->PlayAudio(Audio::BombExplode);
 	m_currentWorld->ExplodeBomb(m_currentWorld->GetGridPos(position), m_owner->GetBombRadius());
 	m_container->DeleteEntity(this);
 }

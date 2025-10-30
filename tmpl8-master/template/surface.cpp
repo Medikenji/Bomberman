@@ -61,7 +61,10 @@ Surface::~Surface()
 void Surface::Clear( uint c )
 {
 	const int s = width * height;
-	memset(pixels, c, s);
+	for (int i = 0; i < s; i++)
+	{
+		pixels[i] = c;
+	}
 }
 
 void Surface::Plot( int x, int y, uint c )

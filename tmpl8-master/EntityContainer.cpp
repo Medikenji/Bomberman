@@ -15,32 +15,41 @@ EntityContainer::EntityContainer()
 		surfaces[i]->offsetX = 0;
 		surfaces[i]->offsetY = 0;
 	}
+	m_entities = new Entity*[MAX_ENTITIES];
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+		m_entities[i] = nullptr;
+	}
 }
 
 
 EntityContainer::~EntityContainer()
 {
-	for (int i = 0; i < m_surfaceAmount; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		delete surfaces[i];
+		if (surfaces[i])
+			delete surfaces[i];
+		surfaces[i] = nullptr;
 	}
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (!dynamic_cast<BomberMan*>(m_entities[i]))
+		if (m_entities[i])
 		{
-			m_entities[i]->DeleteMask();
-			delete m_entities[i];
+			if (!dynamic_cast<BomberMan*>(m_entities[i]))
+			{
+				m_entities[i]->DeleteMask();
+				delete m_entities[i];
+				m_entities[i] = nullptr;
+			}
 		}
 	}
+	delete[] m_entities;
 }
 
 
 void EntityContainer::SetSurfaceAmount(int _amount)
 {
-	if (m_surfaceAmount == -1)
-	{
-		m_surfaceAmount = _amount;
-	}
+	m_surfaceAmount = _amount;
 }
 
 
@@ -48,13 +57,19 @@ void EntityContainer::UpdateEntities(float _deltaTime)
 {
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (!m_entities[i]->drawnOnTopLayer)
-			m_entities[i]->Update(_deltaTime);
+		if(m_entities[i])
+		{
+			if (!m_entities[i]->drawnOnTopLayer)
+				m_entities[i]->Update(_deltaTime);
+		}
 	}
 	for (int i = 0; i < m_entityAmount; i++)
 	{
-		if (m_entities[i]->drawnOnTopLayer)
-			m_entities[i]->Update(_deltaTime);
+		if (m_entities[i])
+		{
+			if (m_entities[i] && m_entities[i]->drawnOnTopLayer)
+				m_entities[i]->Update(_deltaTime);
+		}
 	}
 }
 
@@ -159,6 +174,19 @@ void EntityContainer::DrawToSurfaces(Sprite* _sprite, float2 _position, Entity* 
 	{
 		_sprite->SetFrame(_entity->GetCurrentFrame());
 		_sprite->Draw(surfaces[i]->surface, (int)(_position.x + surfaces[i]->offsetX), (int)(_position.y + surfaces[i]->offsetY));
+	}
+}
+
+
+void EntityContainer::DrawSpriteToScreen(Sprite* _sprite, float2 _position, uint_fast8_t _screen)
+{
+	if (m_surfaceAmount == 1)
+	{
+		_sprite->Draw(m_mainsurface, (int)(_position.x + surfaces[_screen]->offsetX), (int)(_position.y));
+	}
+	else
+	{
+		_sprite->Draw(surfaces[_screen]->surface, (int)(_position.x + surfaces[_screen]->offsetX), (int)(_position.y));
 	}
 }
 

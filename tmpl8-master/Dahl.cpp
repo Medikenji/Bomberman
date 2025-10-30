@@ -4,6 +4,7 @@
 
 Dahl::Dahl()
 {
+	m_score = 400;
 	m_speed = 35.0f;
 	m_direction = Direction::X;
 	m_directionTimer = (((float)rand() / (float)RAND_MAX) * 10 + 1);

@@ -5,6 +5,7 @@
 
 Ballom::Ballom()
 {
+	m_score = 100;
 	m_speed = 25.0f;
 	m_direction = rand() % 2;
 	m_directionTimer = (((float)rand() / (float)RAND_MAX) * 9 + 1);

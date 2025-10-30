@@ -8,5 +8,9 @@ public:
 
 	// Functions
 	void Update(float _deltaTime);
+
+private:
+	// Variables
+	float m_resetTimer;
 };
 

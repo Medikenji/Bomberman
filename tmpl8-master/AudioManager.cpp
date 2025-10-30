@@ -1,6 +1,9 @@
 #include "precomp.h"
 #include "AudioManager.h"
 #define MINIAUDIO_IMPLEMENTATION
+//#define MA_ENABLE_ONLY_SPECIFIC_BACKENDS
+//#define MA_ENABLE_DSOUND
+
 #include "../lib/miniaudio.h"	// miniaudio is an audio playback and capture library for C and C++. It's made up of a single source file, has no external dependencies and is released into the public domain.
 
 
@@ -40,6 +43,9 @@ void AudioManager::PlayAudio(uint_fast8_t _audio)
 	case Audio::DeathSound:
 		ma_sound_start(&m_deathSound);
 		break;
+	case Audio::VictoryTheme:
+		ma_sound_start(&m_victoryTheme);
+		break;
 	default:
 		FatalError("Audio does not exist");
 		break;
@@ -52,45 +58,28 @@ void AudioManager::StopAudio(uint_fast8_t _audio)
 	switch (_audio)
 	{
 	case Audio::MenuSong:
+		ma_sound_set_at_end(&m_menuSong, MA_TRUE);
 		ma_sound_stop(&m_menuSong);
 		break;
 	case Audio::MenuSelect:
+		ma_sound_set_at_end(&m_menuSelect, MA_TRUE);
 		ma_sound_stop(&m_menuSelect);
 		break;
 	case Audio::MainTheme:
+		ma_sound_set_at_end(&m_mainTheme, MA_TRUE);
 		ma_sound_stop(&m_mainTheme);
 		break;
 	case Audio::BombExplode:
+		ma_sound_set_at_end(&m_bombExplosion, MA_TRUE);
 		ma_sound_stop(&m_bombExplosion);
 		break;
 	case Audio::DeathSound:
-		ma_sound_start(&m_deathSound);
+		ma_sound_set_at_end(&m_deathSound, MA_TRUE);
+		ma_sound_stop(&m_deathSound);
 		break;
-	default:
-		FatalError("Audio does not exist");
-		break;
-	}
-}
-
-
-void AudioManager::StopAudio(uint_fast8_t _audio, int _fadeInMs)
-{
-	switch (_audio)
-	{
-	case Audio::MenuSong:
-		ma_sound_stop_with_fade_in_milliseconds(&m_menuSong, _fadeInMs);
-		break;
-	case Audio::MenuSelect:
-		ma_sound_stop_with_fade_in_milliseconds(&m_menuSelect, _fadeInMs);
-		break;
-	case Audio::MainTheme:
-		ma_sound_stop_with_fade_in_milliseconds(&m_mainTheme, _fadeInMs);
-		break;
-	case Audio::BombExplode:
-		ma_sound_stop_with_fade_in_milliseconds(&m_bombExplosion, _fadeInMs);
-		break;
-	case Audio::DeathSound:
-		ma_sound_stop_with_fade_in_milliseconds(&m_deathSound, _fadeInMs);
+	case Audio::VictoryTheme:
+		ma_sound_set_at_end(&m_victoryTheme, MA_TRUE);
+		ma_sound_stop(&m_victoryTheme);
 		break;
 	default:
 		FatalError("Audio does not exist");
@@ -101,11 +90,12 @@ void AudioManager::StopAudio(uint_fast8_t _audio, int _fadeInMs)
 
 void AudioManager::StopAll()
 {
-	ma_sound_stop(&m_menuSong);
-	ma_sound_stop(&m_menuSelect);
-	ma_sound_stop(&m_mainTheme);
-	ma_sound_stop(&m_bombExplosion);
-	ma_sound_start(&m_deathSound);
+	StopAudio(Audio::MenuSong);
+	StopAudio(Audio::MenuSelect);
+	StopAudio(Audio::MainTheme);
+	StopAudio(Audio::BombExplode);
+	StopAudio(Audio::DeathSound);
+	StopAudio(Audio::VictoryTheme);
 }
 
 
@@ -124,7 +114,6 @@ AudioManager::AudioManager()
 	}
 	ma_sound_set_looping(&m_menuSong, true);
 	ma_sound_set_start_time_in_milliseconds(&m_menuSong, 50);
-	ma_sound_start(&m_menuSong);
 
 	// Init MenuSelect
 	InitFromFile("assets/audio/MenuSelect.mp3", m_menuSelect);
@@ -139,17 +128,29 @@ AudioManager::AudioManager()
 
 	// Init DeathSound
 	InitFromFile("assets/audio/DeathSound.mp3", m_deathSound);
+
+	// Init VictoryTheme
+	if (!(rand() % 2))
+	{
+		InitFromFile("assets/audio/VictoryI.mp3", m_victoryTheme);
+	}
+	else
+	{
+		InitFromFile("assets/audio/VictoryII.mp3", m_victoryTheme);
+	}
+		ma_sound_set_looping(&m_victoryTheme, true);
 }
 
 
 AudioManager::~AudioManager()
 {
-	ma_engine_uninit(&m_engine);
 	ma_sound_uninit(&m_menuSong);
 	ma_sound_uninit(&m_menuSelect);
 	ma_sound_uninit(&m_mainTheme);
 	ma_sound_uninit(&m_bombExplosion);
 	ma_sound_uninit(&m_deathSound);
+	ma_sound_uninit(&m_victoryTheme);
+	ma_engine_uninit(&m_engine);
 }
 
 

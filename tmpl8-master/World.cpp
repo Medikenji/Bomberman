@@ -7,15 +7,18 @@
 #include "Bomb.h"
 #include "Ballom.h"
 #include "Dahl.h"
-
+#include "FontRenderer.h"
 
 World::World(EnemyList* _list) {
 	srand((unsigned int)time(0));
+	m_score = 0;
 	m_enemyList = _list;
 	m_killableEntitiesAmount = 0;
 	position.y = 32;
 	m_level = new Level();
 	m_surface = new Surface("assets/Grass.png");
+	AudioManager::GetAudioManager()->PlayAudio(Audio::MainTheme);
+	AudioManager::GetAudioManager()->PlayAudio(Audio::MainTheme);
 }
 
 
@@ -37,13 +40,13 @@ void World::Initialize()
 		m_container->AddEntity(AddKillableEntity(BomberMan::GetPlayers()[i]));
 	}
 	GenerateMap();
-	AudioManager::GetAudioManager()->PlayAudio(Audio::MainTheme);
 }
 
 
 void World::Update(float)
 {
 	DrawMap();
+	FontRenderer::DrawText({ 8, 8 }, (int)m_score, m_container);
 }
 
 

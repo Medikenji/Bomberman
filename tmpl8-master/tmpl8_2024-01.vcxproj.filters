@@ -29,16 +29,10 @@
     <ClCompile Include="Entity.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
     <ClCompile Include="EntityContainer.cpp">
-      <Filter>bomberman\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
       <Filter>bomberman\classes</Filter>
     </ClCompile>
     <ClCompile Include="Interactable.cpp">
@@ -70,6 +64,15 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>bomberman\classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>bomberman\classes\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>bomberman\classes\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="FontRenderer.cpp">
+      <Filter>bomberman\classes\Helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,13 +113,7 @@
     <ClInclude Include="Bomb.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
     <ClInclude Include="EntityContainer.h">
-      <Filter>bomberman\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioManager.h">
       <Filter>bomberman\classes</Filter>
     </ClInclude>
     <ClInclude Include="Interactable.h">
@@ -149,6 +146,15 @@
     <ClInclude Include="SceneManager.h">
       <Filter>bomberman\classes\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>bomberman\classes\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>bomberman\classes\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="FontRenderer.h">
+      <Filter>bomberman\classes\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -159,6 +165,9 @@
     </None>
     <None Include="template\LICENSE">
       <Filter>template</Filter>
+    </None>
+    <None Include="ClassDiagram.cd">
+      <Filter>bomberman\classes</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +194,9 @@
     </Filter>
     <Filter Include="bomberman\classes\Blocks">
       <UniqueIdentifier>{510d885d-5915-48de-8b54-7330ae800b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bomberman\classes\Helper">
+      <UniqueIdentifier>{528d2b7b-0efa-444d-9c95-86f7c036b8f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

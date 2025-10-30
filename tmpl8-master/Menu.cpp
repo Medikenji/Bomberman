@@ -53,7 +53,6 @@ void Menu::Update(float)
 
 	if (GetAsyncKeyState(GLFW_KEY_SPACE) && choice == 0)
 	{
-		AudioManager::GetAudioManager()->StopAudio(Audio::MenuSong);
 		EntityContainer::SetSurfaceAmount(1);
 		BomberMan** players = new BomberMan*[1];
 		for (int i = 0; i < 1; i++)	
@@ -71,7 +70,6 @@ void Menu::Update(float)
 
 	if (GetAsyncKeyState(GLFW_KEY_SPACE) && choice == 2)
 	{
-		AudioManager::GetAudioManager()->StopAudio(Audio::MenuSong);
 		EntityContainer::SetSurfaceAmount(2);
 		BomberMan** players = new BomberMan*[2];
 		for (int i = 0; i < 2; i++)

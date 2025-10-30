@@ -40,6 +40,7 @@ public:
 	void ClearSurfaces(int _clearColor);
 	void CopyToSurfaces(Surface* _surface, float2 _position);
 	void DrawToSurfaces(Sprite* _sprite, float2 _position, Entity* _entity);
+	void DrawSpriteToScreen(Sprite* _sprite, float2 _position, uint_fast8_t _screen = 0);
 	void PlotToSurfaces(int _pixelColor, float2 _position);
 	void BoxToSurfaces(int _pixelColor, float4 _rectangle);
 
@@ -48,7 +49,7 @@ private:
 	Surface* m_mainsurface = nullptr;
 	SceneManager* m_sceneManager = nullptr;
 	SplitSurface* surfaces[2]{ 0 };
-	Entity* m_entities[MAX_ENTITIES]{ 0 };
+	Entity** m_entities;
 	inline static int m_surfaceAmount = -1;
 	uint_least16_t m_nextEntityId;
 	uint_least16_t m_entityAmount;

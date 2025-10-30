@@ -27,7 +27,6 @@ private:
 	};
 
 	// Variables
-	World* m_currentWorld = nullptr;
 	bool m_direction;
 	float m_speed;
 	float m_directionTimer;
